@@ -1,0 +1,109 @@
+/*
+      Created by Keith Donegan of Code-Sucks.com
+	  
+	  E-Mail: Keithdonegan@gmail.com
+	  
+	  You can do whatever you want with these layouts,
+	  but it would be greatly appreciated if you gave a link
+	  back to http://www.code-sucks.com
+	  
+*/
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+}
+
+#wrapper { 
+    margin: 0 auto;
+    width: 922px;
+}
+
+#header {
+    width: 900px;
+    color: #FFF;
+    padding: 10px;
+    border: 1px solid #ccc;
+    height: 100px;
+    margin: 10px 0px 0px 0px;
+    background: #DAC8BF
+		url(images/header.jpg);
+}
+
+#navigation {
+    width: 900px;
+    color: #333;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin: 0px 0px 0px 0px;
+    background: #BD9C8C;
+}
+
+#navigation dl {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#navigation dt {
+    display: inline;
+}
+
+#navigation dt a:link, dt a:visited {
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #98bf21;
+    text-align: center;
+    padding: 6px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+#navigation dt a:hover, dt a:active {
+    background-color: #7A991A;
+}
+
+.hidden {
+    display: none;
+}
+
+#content { 
+    width: 900px;
+    color: #333;
+    border: 1px solid #ccc;
+    background: #F2F2E6;
+    margin: 0px 0px 0px 0px;
+    padding: 10px;
+/*    height: 350px;*/
+}
+
+#content p, ul {
+    padding-bottom: 15px;
+}
+
+#content li {
+    margin-left: 3em;
+}
+
+#footer { 
+    width: 900px;
+    color: #333;
+    border: 1px solid #ccc;
+    background: #BD9C8C;
+    margin: 0px 0px 10px 0px;
+    padding: 10px;
+}
+
+#footer a {
+    text-decoration: none;
+}
+
+#footer a:hover {
+    color: #db6d16;
+}
+
+#footer #altnav {
+    width: 350px;
+    float: right;
+    text-align: right;
+}
