@@ -17,43 +17,39 @@
 
 	<style type="text/css" media="all">
 	    /* <!-- */
-	    @import "main.css";
+	    @import "css/center-column.css";
+	    @import "css/coloring.css";
 	    /* --> */
 	</style>
     </head>
 
     <body>
 
-	<!-- Header Wrapper -->
+	<!-- Header -->
 	<div id="header">
 
 	    <h1>Amrutlar</h1>
 
 	    <!-- Begin Naviagtion -->
-	    <div id="navigation">
-
-		<dl>
-		    <dt id="home"><a href="#">Home</a></dt>
-		    <dt id="galley"><a href="#">Galley</a></dt>
-		    <dt id="projects"><a href="#">Projects</a></dt>
-		    <dt id="blog"><a href="#">Blog</a></dt>
-		    <dt id="about"><a href="#">About</a></dt>
-		    <dt id="resume"><a href="#">Resume</a></dt>
-		    <dt id="contact"><a href="#">Contact</a></dt>
-		</dl>
-
-	    </div>
+	    <ul>
+		<li><a href="index.html">Blog</a></li>
+		<li><a href="galley.html">Galley</a></li>
+		<li><a href="projects.html">Projects</a></li>
+		<li><a href="resume.html">Resume</a></li>
+		<li><a href="about.html">About</a></li>
+	    </ul>
 	    <!-- End Naviagtion -->
 
 	</div>
-	<!-- End Header Wrapper -->
+	<!-- End Header -->
 
 
 	<div class="colmask threecol">
 	    <div class="colmid">
 		<div class="colleft">
+		    
+		    <!-- Begin Content -->
 		    <div class="col1">
-			<!-- Begin Content -->
 			<h2>
 			    Objective
 			</h2>
@@ -172,16 +168,19 @@
 			<p>
 			Available upon request
 			</p>
-			<!-- End Content -->
 		    </div>
+		    <!-- End Content -->
+		    
+		    <!-- Col 2 start -->
 		    <div class="col2">
-			<!-- Col 2 start -->
-			<h2>Test</h2>
 		    </div>
+		    <!-- Col 2 end -->
+
+		    <!-- Col 3 start -->
 		    <div class="col3">
-			<!-- Col 2 start -->
-			<h2>Test 2</h2>
 		    </div>
+		    <!-- Col 3 end -->
+
 		</div>
 	</div>
 
@@ -189,19 +188,24 @@
 	<div id="footer">
 
 	    <div id="altnav">
-		<a href="#">Home</a> - 
-		<a href="#">Galley</a> - 
-		<a href="#">Projects</a> - 
-		<a href="#">Blog</a> - 
-		<a href="#">About</a> - 
-		<a href="#">Resume</a> - 
-		<a href="#">Contact</a>
+		<p>
+		    <a href="#">Home</a> - 
+		    <a href="#">Galley</a> - 
+		    <a href="#">Projects</a> - 
+		    <a href="#">Blog</a> - 
+		    <a href="#">About</a> - 
+		    <a href="#">Resume</a> - 
+		    <a href="#">Contact</a>
+		</p>
 	    </div>
 
-	    Copyright &copy; Anja Berens <br />
+	    <p>
+		Copyright &copy; Anja Berens <br />
 
-	    Powered by <a href="http://www.linode.com/">Linode</a> <br />
-	    Using a <a href="http://matthewjamestaylor.com/blog/perfect-multi-column-liquid-layouts">Multi-column CSS liquid layouts</a>
+		Powered by <a href="http://www.linode.com/">Linode</a> <br />
+		Using a <a href="http://matthewjamestaylor.com/blog/perfect-multi-column-liquid-layouts">Multi-column CSS liquid layouts</a>
+	    </p>
+
 
 	</div>
 	<!-- End Footer -->
