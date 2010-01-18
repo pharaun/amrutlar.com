@@ -15,6 +15,11 @@ body {
     font-size:90%;
 
     background:#fff;
+
+    /* Background image */
+    background-image: url(../img/wood/wood1.jpg);
+    background-position: top left;
+    background-repeat: repeat;
 }
 a {
     color:#369;
@@ -141,18 +146,27 @@ img {
 .threecol {
     /* right column background colour */
     background:#eee;
+
+    /* Gets the background to show through */
+    background-color:transparent;
 }
 .threecol .colmid {
     /* width of the right column */
     right:12.5%; /* 25% */
     /* center column background colour */
     background:#fff;
+
+    /* Gets the background to show through */
+    background-color:transparent;
 }
 .threecol .colleft {
     /* width of the middle column */
     right:75%; /* 50% */
     /* left column background colour */
     background:#f4f4f4;
+
+    /* Gets the background to show through */
+    background-color:transparent;
 }
 .threecol .col1 {
     /* width of center column content (column 
