@@ -1,3 +1,30 @@
+/* Clearfix - Ignore IE/Mac */
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+* html .clearfix             { zoom: 1; } /* IE6 */
+*:first-child+html .clearfix { zoom: 1; } /* IE7 */
+
+/* Force footer down */
+html,
+body,
+#wrap {
+    height: 100%;
+}
+body > #wrap {
+    height: auto;
+    min-height: 100%;
+}
+#main {
+    padding-bottom: 5em; /* must be same as the footer's height + padding/border */
+}
+
+
 /* General styles */
 body {
     margin: 0;
@@ -41,7 +68,6 @@ p {
 img {
     margin: 10px 0 5px;
 }
-
 
 
 /* Header styles */
@@ -131,13 +157,17 @@ img {
     float: left;
     width: 100%;
     border-top: 1px solid #000;
-}
 
+    /* Forces footer down to bottom of the page */
+    position: relative;
+    margin-top: -5em;	/* negative value of footer height */
+    height: 4.937em;	/* not exactly 5em cuz of 1px border */
+    clear:both;
+}
 #footer p {
     padding: 10px;
     margin: 0;
 }
-
 #footer #altnav {
     float: right;
     text-align: right;
