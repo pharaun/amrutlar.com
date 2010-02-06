@@ -85,6 +85,20 @@ img {
     padding: .4em 15px 0 15px;
     margin: 0;
 }
+
+#header h1 {
+    margin-left: 12%;
+    display: inline;
+
+    font-size:	3em;
+}
+
+/*#header {
+    overflow: hidden;
+    works but its ugly, would prefer to get navbar contents working properly
+}*/
+
+/* Comment this stuff out, will be replaced by the superfish navbar
 #header ul {
     clear: left;
     float: left;
@@ -124,7 +138,7 @@ img {
 }
 #header ul li a span {
     display: block;
-}
+} */
 
 /* 'widths' sub menu */
 #layoutdims {
@@ -167,8 +181,10 @@ img {
 #footer p {
     padding: 10px;
     margin: 0;
+    margin-left: 12%;
 }
 #footer #altnav {
     float: right;
     text-align: right;
+    margin-right: 12%;
 }
