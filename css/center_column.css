@@ -1,30 +1,3 @@
-/* Clearfix - Ignore IE/Mac */
-.clearfix:after {
-    visibility: hidden;
-    display: block;
-    font-size: 0;
-    content: " ";
-    clear: both;
-    height: 0;
-}
-* html .clearfix             { zoom: 1; } /* IE6 */
-*:first-child+html .clearfix { zoom: 1; } /* IE7 */
-
-/* Force footer down */
-html,
-body,
-#wrap {
-    height: 100%;
-}
-body > #wrap {
-    height: auto;
-    min-height: 100%;
-}
-#main {
-    padding-bottom: 5em; /* must be same as the footer's height + padding/border */
-}
-
-
 /* General styles */
 body {
     margin: 0;
@@ -47,8 +20,8 @@ body {
     background-image: url(../img/fac-greyscale.png);
     background-position: top left;
     background-repeat: repeat;
-
 }
+
 a {
     color: #369;
 }
@@ -57,6 +30,7 @@ a:hover {
     background: #369;
     text-decoration: none;
 }
+
 h1, h2, h3 {
     margin: .8em 0 .2em 0;
     padding: 0;
@@ -78,7 +52,10 @@ img {
 }
 #header {
     border-bottom: 1px solid #000;
+
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.2);
 }
+
 #header p,
 #header h1,
 #header h2 {
@@ -109,7 +86,7 @@ img {
 
     padding: 0em 1em;
 
-    background: transparent url(../img/css/8x8_30pa.png);
+    background: none repeat scroll 0 0 rgba(0, 255, 0, 0.2);
 }
 
 
@@ -121,10 +98,12 @@ img {
     border-top: 1px solid #000;
 
     /* Forces footer down to bottom of the page */
-    position: relative;
+ /*   position: relative;
     margin-top: -5.2em;	/* negative value of footer height */
-    height: 4.937em;	/* not exactly 5em cuz of 1px border */
-    clear:both;
+/*    height: 4.99em;	/* not exactly 5em cuz of 1px border */
+/*    clear:both;
+*/
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.2);
 }
 #footer p {
     padding: 10px;
