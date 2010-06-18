@@ -98,58 +98,6 @@ img {
     works but its ugly, would prefer to get navbar contents working properly
 }*/
 
-/* Comment this stuff out, will be replaced by the superfish navbar
-#header ul {
-    clear: left;
-    float: left;
-    width: 100%;
-    list-style: none;
-    margin: 10px 0 0 0;
-    padding: 0;
-}
-#header ul li {
-    display: inline;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-#header ul li a {
-    display: block;
-    float: left;
-    margin: 0 0 0 1px;
-    padding: 3px 10px;
-    text-align: center;
-    background: #eee;
-    color: #000;
-    text-decoration: none;
-    position: relative;
-    left: 15px;
-    line-height: 1.3em;
-}
-#header ul li a:hover {
-    background: #369;
-    color: #fff;
-}
-#header ul li a.active,
-#header ul li a.active:hover {
-    color: #fff;
-    background: #000;
-    font-weight: bold;
-}
-#header ul li a span {
-    display: block;
-} */
-
-/* 'widths' sub menu */
-#layoutdims {
-    clear: both;
-    background: #eee;
-    border-top: 4px solid #000;
-    margin: 0;
-    padding: 6px 15px !important;
-    text-align: right;
-}
-
 
 /* Body Styles */
 #content {
@@ -174,7 +122,7 @@ img {
 
     /* Forces footer down to bottom of the page */
     position: relative;
-    margin-top: -5em;	/* negative value of footer height */
+    margin-top: -5.2em;	/* negative value of footer height */
     height: 4.937em;	/* not exactly 5em cuz of 1px border */
     clear:both;
 }
