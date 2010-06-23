@@ -53,7 +53,9 @@ img {
 #header {
     border-bottom: 1px solid #000;
 
-    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.2);
+    /* Html5 */
+    background:	    none repeat scroll 0 0 rgba(0, 0, 0, 0.2);
+
 }
 
 #header p,
@@ -68,12 +70,10 @@ img {
     display: inline;
 
     font-size:	3em;
-}
 
-/*#header {
-    overflow: hidden;
-    works but its ugly, would prefer to get navbar contents working properly
-}*/
+    /* Html5 */
+    text-shadow:    -1px -1px 0 #650000, 0 0 10px rgba(255, 255, 255, 0.7);
+}
 
 
 /* Body Styles */
@@ -86,32 +86,51 @@ img {
 
     padding: 0em 1em;
 
+    /* Html5 */
     background: none repeat scroll 0 0 rgba(0, 255, 0, 0.2);
+
+    -webkit-border-bottom-right-radius: 20px;
+    -moz-border-radius-bottomright: 20px;
+    border-bottom-right-radius: 20px;
+
+    -webkit-border-bottom-left-radius: 20px;
+    -moz-border-radius-bottomleft: 20px;
+    border-bottom-left-radius: 20px;
 }
 
 
 /* Footer styles */
 #footer {
-    clear: both;
+/*    clear: both;
     float: left;
     width: 100%;
-    border-top: 1px solid #000;
+    border-top: 1px solid #000;*/
+    
+    clear: both;
+    overflow: hidden;
+    position: relative;
+    margin-top:	1em;
+    margin-left: 12%;
+    margin-right: 12%;
 
-    /* Forces footer down to bottom of the page */
- /*   position: relative;
-    margin-top: -5.2em;	/* negative value of footer height */
-/*    height: 4.99em;	/* not exactly 5em cuz of 1px border */
-/*    clear:both;
-*/
+    padding: 0em 1em;
+    
+    /* Html5 */
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0.2);
+
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+
+    /* Shade/etc */
 }
 #footer p {
     padding: 10px;
     margin: 0;
-    margin-left: 12%;
+/*    margin-left: 12%;*/
 }
 #footer #altnav {
     float: right;
     text-align: right;
-    margin-right: 12%;
+/*    margin-right: 12%;*/
 }
