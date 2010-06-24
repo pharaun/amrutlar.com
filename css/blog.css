@@ -1,0 +1,85 @@
+/* Blog content */
+#content .post {
+    background: none repeat scroll 0 0 rgba(255, 0, 0, 0.2);
+
+    margin-top:	    2em;
+    margin-bottom:  1em;
+}
+
+#content .post:first-child {
+    margin-top:	    1em;
+}
+
+#content .post p {
+    line-height:    140%;
+}
+
+#content .post p + p {
+    text-indent:    30px;
+}
+
+.postHeader {
+/*    background: none repeat scroll 0 0 rgba(255, 0, 0, 0.2);*/
+}
+
+
+/*** date stamp ***/
+.postDate {
+    margin:	1.2em 10px;
+}
+
+.postDate {
+    display:	block;
+    float:	left;
+    line-height:    1.5em;
+    margin-top:	5px;
+    margin-bottom:  10px;
+    text-align:	center;
+    width:	50px;
+
+    background: none repeat scroll 0 0 rgba(255, 0, 0, 0.2);
+}
+
+.postDate .day {
+    font-size:	2em;
+    padding-top:    0.4em;
+    padding-bottom: 0.2em;
+}
+
+.postDate .month {
+    font-variant:   small-caps;
+    margin-bottom: -0.2em;
+    letter-spacing: 0.1em;
+}
+
+.postDate .year {
+    margin-top:    -0.2em;
+    padding-bottom: 0.2em;
+}
+
+.postDate span {
+    display:	block;
+}
+
+
+/*** Header ***/
+.postHeader h1 {
+    font-size:	1.5em;
+    font-weight:    normal;
+    line-height:    1.524em;
+    margin:	0 10px;
+}
+
+.postHeader h1 a {
+    text-decoration:	none;
+}
+
+/*** Footer ***/
+.postFooter {
+    background: none repeat scroll 0 0 rgba(255, 0, 0, 0.2);
+    font-style:	italic;
+}
+
+.postFooter a {
+    text-decoration:	none;
+}
