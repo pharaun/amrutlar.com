@@ -30,11 +30,12 @@
 #header a {
     padding:	0.75em 1em;
     color:	#FFF;
-    font-family: sans-serif;
+    font-family: Verdana, sans-serif;
+    font-weight: bold;
 
     /* Html5 */
     background-image: -moz-linear-gradient(top, #730021, #400012);
-    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #ca0000),color-stop(1, #970000));
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #730021),color-stop(1, #400012));
 
     /* Opera */
     box-shadow:  inset 0 0 15px #900, inset 0 35px 35px -18px #ca0000, 0 0 20px #446b6b;
@@ -54,12 +55,17 @@
     border-top-right-radius: 15px;
 }
 
-#header a:hover {
+#header a:hover,
+.blog #header #blog a,
+.gallery #header #gallery a,
+.projects #header #projects a,
+.resume #header #resume a,
+.about #header #about a {
     color:	#FFF;
 
     /* Html5 */
     background-image: -moz-linear-gradient(bottom, #8C0028, #730021);
-    background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0, #ca0000),color-stop(1, #970000));
+    background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0, #8C0028),color-stop(1, #730021));
 
     /* Opera */
     box-shadow: inset 0 0 15px #900, inset 0 -35px 35px -18px #ca0000;

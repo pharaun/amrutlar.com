@@ -39,6 +39,9 @@
 
 #content .post p {
     line-height:    140%;
+
+    /* Make sure it matches the margin & width of .postDate */
+    margin-left:    60px;
 }
 
 #content .post p + p {
@@ -132,6 +135,9 @@
 .postFooter {
 /*    background: none repeat scroll 0 0 rgba(255, 0, 0, 0.2);*/
     font-style:	italic;
+    
+    /* Make sure it matches the margin & width of .postDate */
+    margin-left:    60px;
 }
 
 .postFooter a {
