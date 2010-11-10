@@ -117,7 +117,8 @@
 /*** Header ***/
 .postHeader h1 {
     font-size:	1.5em;
-    font-weight:    normal;
+    font-weight:    bold;
+    font-family:    serif;
     line-height:    1.524em;
     margin:	0 10px;
 }

@@ -1,13 +1,15 @@
 Directory=File.dirname(__FILE__) + "/*"
 
 namespace :deploy do
+    task :build => "rake:build:background"
+
     desc "Deploy to the localhost machine"
-    task :localhost do
+    task :localhost => :build do
 	puts "Localhost deployment"
     end
 
     desc "Deploy to asram for local network testing"
-    task :asram do
+    task :asram => :build do
 	puts "asram deployment"
 	cmd = "rsync -vrz #{Directory} asram:/var/www/localhost/htdocs"
 	puts cmd
@@ -15,7 +17,7 @@ namespace :deploy do
     end
 
     desc "Deploy to amrutlar.net for network deployment"
-    task :amrutlar do
+    task :amrutlar => :build do
 	puts "amrutlar.net deployment"
 	cmd = "rsync -vrz #{Directory} amrutlar.net:/var/www"
 	puts cmd
@@ -27,6 +29,17 @@ namespace :build do
     desc "Build the resume"
     task :resume do
 	puts "Build Resume"
+    end
+
+    desc "Convert background and crush it into jpeg"
+    task :background do
+	puts "boston-skyline.png -> boston-skyline.jpg"
+	cmd = "convert img/boston-skyline.png -quality 100 img/boston-skyline.jpg"
+	puts cmd
+	system cmd
+	cmd = "jpegoptim -m80 img/boston-skyline.jpg"
+	puts cmd
+	system cmd
     end
 end
 
