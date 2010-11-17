@@ -1,0 +1,68 @@
+/* Resetting the content padding */
+#content {
+    padding:	0em;
+}
+
+/*** Header ***/
+#content .about h1 {
+    font-size:  1.5em;
+    font-weight:    bold;
+    font-family:    serif;
+    line-height:    1.524em;
+    margin:     0 10px;
+
+    color:  #970000
+}
+
+/* About content */
+#content .about {
+    background: none repeat scroll 0 0 rgba(204,204,204,0.5);
+    
+    -webkit-border-bottom-right-radius: 5px;
+    -moz-border-radius-bottomright: 5px;
+    -border-bottom-right-radius: 5px;
+
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    -border-bottom-left: 5px;
+
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topright: 5px;
+    -border-top-right: 5px;
+
+    -webkit-border-top-left-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -border-topleft: 5px;
+
+    margin-top:     0.75em;
+    margin-bottom:  0.75em;
+
+    /* Push in the text */
+    padding:    0.1em 0.5em 0.25em 0.5em;
+}
+
+#content .about:first-child {
+    margin-top:	1em;
+}
+
+#content .about:last-child {
+    margin-bottom:	0.25em;
+}
+
+#content .about p {
+    line-height:    140%;
+    margin-left:    10px;
+}
+
+#content .about p + p {
+    text-indent:    30px;
+}
+
+#content .about a {
+    text-decoration:    none;
+    color: #970000;
+}
+
+#content .about a:hover {
+    text-decoration:    underline;
+}
