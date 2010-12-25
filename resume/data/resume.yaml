@@ -1,0 +1,218 @@
+# Trying to stick with the microformats format (hresume, hcard, hcalendar)
+summary: >-
+    To apply my skills and knowledge to a position in a Software Engineering
+    environment. Available to start working in the Summer of 2011.
+
+contact:
+    fn: Anja Berens
+    adr:
+        street_address: 225 Littleton Rd
+        extended_address: Bldg 10, Apt 206
+        locality: Chelmsford
+        region: MA
+        postal_code: 01824
+    email: pharaun666@gmail.com
+
+education:
+    -   name: Rochester Institute of Technology
+        degree:
+            kind: Bachelor of Science
+            in: Software Engineering
+        adr:
+            street_address: One Lomb Memorial Drive
+            locality: Rochester
+            region: NY
+            postal_code: 14623
+        vevent:
+            dtstart: 2003-09
+            dtend: 2009-05
+        pfos:
+            gpa: 3.05
+            out_of: 4.0
+        scholarship: Presidental Scholarship
+        courses:
+            -   course: "Computer Science 1-4"
+                skill:
+                    - Java
+                    - "C++"
+            -   course: "Data Communication & Network I & II"
+            -   course: Professional Communications
+            -   course: "Science, Technology, Values"
+            -   course: Computer Science Theory
+            -   course: "Software Verification & Validation"
+            -   course: Software Architectures
+            -   course: "Software Requirements & Specification"
+            -   course: Software Usability
+                skill: 
+                    - GUI/HCI
+            -   course: "Software Process & Project Management"
+            -   course: Principles of Concurrent Software Systems
+            -   course: "Embedded & Real-Time Systems"
+                skill: 
+                    - Assembly
+                    - QNX
+                    - C
+            -   course: Computer Organization
+                skill:
+                    - "CPU Architecture & Design"
+                    - Assembly
+                    - Digital Logic
+
+    -   name: Stratton High School
+        degree:
+            kind: High School
+        adr:
+            locality: Stratton
+            region: CO
+        vevent:
+            dtstart:
+            dtend: 2003-05
+
+skills:
+    -   brief: Programming Languages
+        skill:
+            - Java
+            - Ruby
+            - Perl
+            - "Shell Scripting - Bash"
+            - Assembly
+            - SQL
+            - "C++"
+            - Haskell
+            - JCL
+            - REXX
+            - "HTML, CSS, XML"
+    -   brief: Development Software
+        skill:
+            - Vim
+            - Eclipse
+            - GCC/GDB
+            - Make
+            - Valgrind
+            - CVS
+            - Subversion
+            - GIT
+            - ClearCase
+            - Visual Studio
+            - Ant
+    -   brief: API
+        skill:
+            - jUnit
+            - nUnit
+            - Eclipse OSGi
+    -   brief: Database
+        skill:
+            - sqlite
+            - DB2
+    -   brief: Operating Systems
+        skill:
+            - UNIX/Linux
+            - z/OS
+            - QNX Neutrino RTOS
+            - Microsoft Windows
+            - DOS
+    -   brief: Areas of Knowledge
+        skill:
+            - Software Engineering
+            - Architecture
+            - Concurrent Systems
+            - Object Oriented Design
+            - UML
+            - Requirements and Specifications
+            - "Formal Verification & Validation"
+            - Usability
+            - "Process & Project Management"
+            - "Network (Programming & Infrastructure)"
+
+experience:
+    -   employer: IBM
+        adr:
+            street_address: 550 King St
+            locality: Littleton
+            region: MA
+            postal_code: 01460
+        vevent:
+            dtstart: 2009-09-21
+            dtend:
+        title: Software Developer (Engineer)
+        task:
+            - Worked on various tasks related to the Lotus Connections product.
+            - Integerated the ISA Lite application into Lotus Connection and added in support for over 25 languages.
+            - Updated the Configuration system for Lotus Connections.
+            - Created a new Antivirus codebase for integeration into Lotus Connections.
+            - Various other development tasks such as documentation, testing, and designing.
+
+    -   employer: RIT/Hallmark
+        adr:
+            street_address: One Lomb Memorial Drive
+            locality: Rochester
+            region: NY
+            postal_code: 14623
+        vevent:
+            dtstart: 2009-06-08
+            dtend: 2009-08-16
+        title: Unknown
+        task:
+            - Research into virtual tour of RIT campus with Mark Wambach.
+            - Explored various approaches of doing a virtual tour and researched which software suite/framework would work the best.
+            - Created a detailed approach document and detailed out various possible design/solution for the project.
+    
+    -   employer: IBM
+        adr:
+            street_address: One Lomb Memorial Drive
+            locality: Rochester
+            region: NY
+            postal_code: 14623
+        vevent:
+            dtstart: 2008-03-10
+            dtend: 2008-08-22
+        title: "Co-op Pre-Professional Engineer"
+        task:
+           - "Designed the Architecture of the SymConnect plug-in for Lotus Symphony and Lotus Connections."
+           - "Performed Quality Assurance for the SymConnect plug-in."
+           - "Emphasized/added in Internationalization, and Accessibility support to the SymConnect Plug-in, along with a focus on usability."
+
+    -   employer: IBM
+        adr:
+            street_address: 9000 South Rita Road
+            locality: Tucson
+            region: AZ
+            postal_code: 85744
+        vevent:
+            dtstart: 2006-06-12
+            dtend: 2006-11-17
+        title: "Co-op Pre-Professional Programmer"
+        task:
+           - "Built an automated test suite to assist in regression function testing of Object Access Method (OAM)."
+           - "Performed reviews of other team members' code and documents."
+           - "Performed various tasks related with testing and/or development of OAM."
+
+projects:
+    - "Created the inital communication protocol, general architecture, and the test plan along with the test cases for a robotics project for my senior project (6 months)."
+    - "Created the Software Requirements Specification for a collaborative classroom note-taking application."
+    - "Created a router simulator for simulating the RIP routing protocol, then implemented the Chord Peer-to-peer system on top of the router simulator."
+    - "Designed, Coded, and Tested a database subsystem for a Java based spelling racer game. The database subsystem was an interface to a local/remote SQL database."
+    - "Designed, Coded, and Tested a parser for a copier machine simulator. The parser constructed a tree which was then interpreted to get the needed information to run the simulator."
+
+affiliations:
+    -   name: Eagle Scout in Boy Scouts of America
+        vevent:
+            dtstart: 1993
+            dtend: 2000
+
+activities:
+    -   activity: Stage Construction Crew for NTID Theater
+        vevent:
+            dtstart: 2005
+            dtend: 2009
+    -   activity: Community Service with NTID Student Congress
+        vevent:
+            dtstart: 2004
+            dtend: 2005
+    -   activity: Repainted a community center with IBM co-workers in Tucson, Az
+        vevent:
+            dtstart: 2006
+            dtend: 2006
+
+references:
+    -
