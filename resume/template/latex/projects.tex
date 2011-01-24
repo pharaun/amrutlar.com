@@ -1,0 +1,19 @@
+\section{Projects}
+
+\vskip 2pt
+\begin{itemize}[style=sameline,
+                    itemsep=1pt,
+                    parsep=0pt,
+                    topsep=0pt,
+                    partopsep=0pt,
+                    labelindent=2cm,
+                    rightmargin=5mm]
+    <%- for p in projects %>
+    <%- if p.url is defined %>
+    \item << p.project >> -- \url{<< p.url >>}
+    <%- else %>
+    \item << p.project >>
+    <%- endif %>
+    <%- endfor %>
+\end{itemize}
+

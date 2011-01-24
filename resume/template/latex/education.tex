@@ -1,0 +1,11 @@
+\section{Education}
+
+<% for edu in education -%>
+\begin{tabularx}{0.97\linewidth}{Xr}
+\textbf{<< edu.name >>} & << edu.degree.kind >> in \textbf{<< edu.degree.in >>} \\
+<< edu.adr.locality >>, << edu.adr.region >> & Graduated: << edu.vevent.dtend >> \\
+<% if edu.pfos is defined -%>
+PFOS GPA: << edu.pfos.gpa >>/<< edu.pfos.out_of >> & << edu.scholarship >> \\
+<% endif -%>
+\end{tabularx}
+<% endfor %>

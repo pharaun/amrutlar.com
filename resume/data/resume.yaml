@@ -1,8 +1,10 @@
 # Trying to stick with the microformats format (hresume, hcard, hcalendar)
+---
 summary: >-
     To apply my skills and knowledge to a position in a Software Engineering
     environment. Available to start working in the Summer of 2011.
 
+---
 contact:
     fn: Anja Berens
     adr:
@@ -13,6 +15,7 @@ contact:
         postal_code: 01824
     email: pharaun666@gmail.com
 
+---
 education:
     -   name: Rochester Institute of Technology
         degree:
@@ -29,7 +32,7 @@ education:
         pfos:
             gpa: 3.05
             out_of: 4.0
-        scholarship: Presidental Scholarship
+        scholarship: Presidential Scholarship
         courses:
             -   course: "Computer Science 1-4"
                 skill:
@@ -58,72 +61,90 @@ education:
                     - Assembly
                     - Digital Logic
 
-    -   name: Stratton High School
-        degree:
-            kind: High School
-        adr:
-            locality: Stratton
-            region: CO
-        vevent:
-            dtstart:
-            dtend: 2003-05
+#    -   name: Stratton High School
+#        degree:
+#            kind: High School
+#        adr:
+#            locality: Stratton
+#            region: CO
+#        vevent:
+#            dtstart:
+#            dtend: 2003-05
 
+---
 skills:
     -   brief: Programming Languages
         skill:
             - Java
             - Ruby
             - Perl
-            - "Shell Scripting - Bash"
-            - Assembly
+            - Python
             - SQL
+            - Bash
+            - Assembly
             - "C++"
-            - Haskell
-            - JCL
-            - REXX
-            - "HTML, CSS, XML"
+#            - "Shell Scripting (Bash)"
+#            - Haskell
+#            - JCL
+#            - REXX
     -   brief: Development Software
         skill:
             - Vim
             - Eclipse
-            - GCC/GDB
-            - Make
-            - Valgrind
-            - CVS
+            - Git
             - Subversion
-            - GIT
+            - CVS
             - ClearCase
-            - Visual Studio
+            - Make
             - Ant
-    -   brief: API
+            - Valgrind
+            - GCC/GDB
+    -   brief: Misc
         skill:
+            - SQLite
+            - Berkley DB
+            - Basic MySql
             - jUnit
             - nUnit
-            - Eclipse OSGi
-    -   brief: Database
-        skill:
-            - sqlite
-            - DB2
-    -   brief: Operating Systems
-        skill:
-            - UNIX/Linux
-            - z/OS
-            - QNX Neutrino RTOS
-            - Microsoft Windows
-            - DOS
+#           - Eclipse OSGi
+            - HTML
+            - XML
+            - CSS
+            - GitHub
+            - Firebug
+            - Linux
+#    -   brief: APIs
+#        skill:
+#            - jUnit
+#            - nUnit
+#            - Eclipse OSGi
+#    -   brief: Databases
+#        skill:
+#            - SQLite
+#            - DB2
+#    -   brief: Operating Systems
+#        skill:
+#            - UNIX/Linux
+#            - z/OS
+#            - QNX Neutrino RTOS
+#            - Microsoft Windows
+#            - DOS
     -   brief: Areas of Knowledge
         skill:
             - Software Engineering
             - Architecture
             - Concurrent Systems
+            - Internationalization
+            - Usability
+            - Unicode
+            - "Network (Programming & Infrastructure)"
             - Object Oriented Design
-            - UML
             - Requirements and Specifications
             - "Formal Verification & Validation"
-            - Usability
             - "Process & Project Management"
-            - "Network (Programming & Infrastructure)"
+            - UML
 
+---
 experience:
     -   employer: IBM
         adr:
@@ -134,13 +155,14 @@ experience:
         vevent:
             dtstart: 2009-09-21
             dtend:
-        title: Software Developer (Engineer)
+        title: Software Developer
         task:
-            - Worked on various tasks related to the Lotus Connections product.
-            - Integerated the ISA Lite application into Lotus Connection and added in support for over 25 languages.
+            - Integrated the ISA Lite application into Lotus Connection and added in support for over 25 languages.
+            - Created a new Antivirus codebase for integration into Lotus Connections.
             - Updated the Configuration system for Lotus Connections.
-            - Created a new Antivirus codebase for integeration into Lotus Connections.
-            - Various other development tasks such as documentation, testing, and designing.
+            - Wrote several scripts to speed up various repetitive testing or development tasks.
+#            - Worked on various tasks related to the Lotus Connections product.
+#            - Various other development tasks such as documentation, testing, and designing.
 
     -   employer: RIT/Hallmark
         adr:
@@ -151,11 +173,11 @@ experience:
         vevent:
             dtstart: 2009-06-08
             dtend: 2009-08-16
-        title: Unknown
+        title: Researcher
         task:
-            - Research into virtual tour of RIT campus with Mark Wambach.
-            - Explored various approaches of doing a virtual tour and researched which software suite/framework would work the best.
-            - Created a detailed approach document and detailed out various possible design/solution for the project.
+            - Explored various approaches of doing virtual tours for the RIT campus.
+            - Researched which software suite/framework would meet our requirements the best.
+            - Created an approach document which detailed out each possible design/solution for the project.
     
     -   employer: IBM
         adr:
@@ -166,11 +188,12 @@ experience:
         vevent:
             dtstart: 2008-03-10
             dtend: 2008-08-22
-        title: "Co-op Pre-Professional Engineer"
+        title: Co-op Pre-Professional Engineer
         task:
-           - "Designed the Architecture of the SymConnect plug-in for Lotus Symphony and Lotus Connections."
-           - "Performed Quality Assurance for the SymConnect plug-in."
-           - "Emphasized/added in Internationalization, and Accessibility support to the SymConnect Plug-in, along with a focus on usability."
+           - Designed the architecture of the SymConnect plug-in for Lotus Symphony and Lotus Connections.
+           - Performed Quality Assurance for the SymConnect plug-in.
+           - Emphasized/added in Internationalization, and Accessibility support to the SymConnect Plug-in. 
+           - Focused on the usability of the plug-in.
 
     -   employer: IBM
         adr:
@@ -181,25 +204,41 @@ experience:
         vevent:
             dtstart: 2006-06-12
             dtend: 2006-11-17
-        title: "Co-op Pre-Professional Programmer"
+        title: Co-op Pre-Professional Programmer
         task:
-           - "Built an automated test suite to assist in regression function testing of Object Access Method (OAM)."
-           - "Performed reviews of other team members' code and documents."
-           - "Performed various tasks related with testing and/or development of OAM."
+           - Built an automated test suite to assist in regression function testing of Object Access Method (OAM).
+#           - "Performed reviews of other team members' code and documents."
+#           - Performed various tasks related with testing and/or development of OAM.
 
+---
 projects:
-    - "Created the inital communication protocol, general architecture, and the test plan along with the test cases for a robotics project for my senior project (6 months)."
-    - "Created the Software Requirements Specification for a collaborative classroom note-taking application."
-    - "Created a router simulator for simulating the RIP routing protocol, then implemented the Chord Peer-to-peer system on top of the router simulator."
-    - "Designed, Coded, and Tested a database subsystem for a Java based spelling racer game. The database subsystem was an interface to a local/remote SQL database."
-    - "Designed, Coded, and Tested a parser for a copier machine simulator. The parser constructed a tree which was then interpreted to get the needed information to run the simulator."
+    -   project: "Designed the initial communication protocol, general architecture, and the test plan for a robotics project for my senior project (6 months)."
+    -   project: "Created the Software Requirements Specification for a collaborative classroom note-taking application."
+#    -   project: "Created a router simulator for simulating the RIP routing protocol, then implemented the Chord Peer-to-peer system on top of the router simulator."
+    -   project: "Chord Peer-to-peer system on top of a router simulator which used the RIP routing protocol."
+#    -   project: "Designed, Coded, and Tested a database subsystem for a Java based spelling racer game. The database subsystem was an interface to a local/remote SQL database."
+    -   project: "Designed, Coded, and Tested a database subsystem for a Java based spelling racer game."
+#    -   project: "Designed, Coded, and Tested a parser for a copier machine simulator. The parser constructed a tree which was then interpreted to get the needed information to run the simulator."
+    -   project: "Designed, Coded, and Tested a parser for a copier machine simulator."
+    -   project: "Created a Work Logger in Ruby & GTK."
+        url: "https://github.com/pharaun/work-logger"
+    -   project: "Created a duplicate image finder in Python."
+        url: "https://github.com/pharaun/python-duplicate-finder"
+    -   project: "Explored OpenGL and subdivision in Ruby, C, & Assembly."
+        url: "https://github.com/pharaun/ruby-tile"
+    -   project: "Started on a Manga/Webcomic viewer in Perl & GTK then ported it over to Ruby."
+        url: "https://github.com/pharaun/oneManga-gtk-viewer"
+    -   project: "Personal site -- http://amrutlar.com -- a longterm work in progress in CSS3, Ruby, and Python."
+        url: "http://amrutlar.com"
 
+---
 affiliations:
     -   name: Eagle Scout in Boy Scouts of America
         vevent:
             dtstart: 1993
             dtend: 2000
 
+---
 activities:
     -   activity: Stage Construction Crew for NTID Theater
         vevent:
@@ -209,10 +248,11 @@ activities:
         vevent:
             dtstart: 2004
             dtend: 2005
-    -   activity: Repainted a community center with IBM co-workers in Tucson, Az
+    -   activity: Repainted a community center with IBM co-workers in Tucson, AZ
         vevent:
             dtstart: 2006
             dtend: 2006
 
+---
 references:
     -

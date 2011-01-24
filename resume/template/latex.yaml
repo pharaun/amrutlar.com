@@ -1,0 +1,60 @@
+# Configuration for the latex resume generator
+---
+output_file: "output/resume.tex"
+
+resume:
+    input: "data/resume.yaml"
+
+    # Area/etc in the yaml file that needs to be filtered out if needed
+    filtering:
+        -   name: foo
+
+template:
+    # Global date formatting, can override
+    global_date_format: "%-m/%-d/%Y"
+
+    # Markers for templating stuff
+    block: [ '<%', '%>' ]
+    variable: [ '<<', '>>' ]
+    comment: [ '<#', '#>' ]
+
+    # Directory that holds the templates
+    path: "template/latex/"
+
+    # Name needs to match here, will reuse it in section_ordering stuff
+    keyword:
+        -   name: header
+            file: "header.tex"
+        -   name: contact
+            file: "contact.tex"
+        -   name: experience
+            file: "experience.tex"
+        -   name: education
+            file: "education.tex"
+            date_format: "%B %Y"
+        -   name: skills
+            file: "skills.tex"
+        -   name: projects
+            file: "projects.tex"
+        -   name: affiliations
+            file: "affiliations.tex"
+            date_format: "%Y"
+        -   name: activities
+            file: "activities.tex"
+            date_format: "%Y"
+        -   name: references
+            file: "references.tex"
+        -   name: footer
+            file: "footer.tex"
+
+    ordering:
+        - header
+        - contact
+        - experience
+        - education
+        - skills
+        - affiliations
+        - activities
+        - projects
+        - references
+        - footer

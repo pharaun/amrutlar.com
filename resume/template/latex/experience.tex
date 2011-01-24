@@ -1,0 +1,20 @@
+\section{Work Experience}
+
+<% for e in experience -%>
+\titles{<< e.title >>}
+\employer{<< e.employer >>}
+\location{<< e.adr.locality >>, << e.adr.region >>}
+\dates{<< e.vevent.dtstart >> -- << e.vevent.dtend >>}
+\begin{position}
+\end{position}
+\begin{itemize}[style=sameline,
+                    itemsep=1pt,
+                    parsep=0pt,
+                    topsep=2pt,
+                    partopsep=2pt,
+                    leftmargin=10mm]
+    <% for t in e.task -%>
+    \item << t >>
+    <% endfor %>
+\end{itemize}
+<% endfor %>

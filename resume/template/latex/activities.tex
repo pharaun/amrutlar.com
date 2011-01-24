@@ -1,0 +1,8 @@
+\section{Activities}
+
+\begin{tabularx}{0.97\linewidth}{Xr}
+<%- for a in activities %>
+<< a.activity >> & << a.vevent.dtstart>> -- << a.vevent.dtend >> \\
+<%- endfor %>
+\end{tabularx}
+

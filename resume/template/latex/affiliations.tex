@@ -1,0 +1,8 @@
+\section{Affiliations}
+
+\begin{tabularx}{0.97\linewidth}{Xr}
+<%- for a in affiliations %>
+<< a.name >> & << a.vevent.dtstart >> -- << a.vevent.dtend >> \\
+<%- endfor %>
+\end{tabularx}
+

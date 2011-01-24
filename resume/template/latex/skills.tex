@@ -1,0 +1,22 @@
+\section{Skills}
+
+\vskip -6pt
+% Remove the tabular env when we can shrink the paragraph slightly
+\begin{tabularx}{0.97\linewidth}{X}
+\begin{description}[style=sameline,
+                    itemsep=1pt,
+                    parsep=0pt,
+                    topsep=0pt,
+                    partopsep=0pt,
+                    leftmargin=5mm,
+                    font=\rm\bf]
+    <% for sa in skills %>
+    \item[<< sa.brief >>:] 
+    <% for s in sa.skill -%>
+    << s >>
+    <% endfor -%>
+    <% endfor %>
+\end{description}
+\end{tabularx}
+
+\vspace{-5mm} % needed to shrink space a bit

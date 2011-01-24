@@ -1,0 +1,102 @@
+\documentclass[letterpaper, paper=letter, pagesize, oneside, final]{scrartcl}
+
+% Fix page size
+\setlength{\pdfpagewidth}{\paperwidth}
+\setlength{\pdfpageheight}{\paperheight}
+
+
+% Set up the symbols - email & phone
+%\usepackage{bbding}
+\RequirePackage{color,graphicx}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{amssymb}
+
+
+% Bullet
+\newcommand*{\bul}{\ensuremath{\bullet}\rule{0.5em}{0pt}}
+
+
+% Set up hyperref package, colors for link, text and headings
+\usepackage[pdftex]{hyperref}
+\definecolor{linkcolour}{HTML}{730021}  %dark red
+\definecolor{shade}{HTML}{D4D7FE}       %light blue shade
+\definecolor{text1}{HTML}{2b2b2b}       %text is almost black
+\definecolor{headings}{HTML}{730021}    %dark red
+\definecolor{symbol}{HTML}{730021}      %dark red
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour, linkcolor=linkcolour}
+
+% Email command
+\newcommand*{\email}[1]{%
+    \href{mailto:#1}{#1}%
+}
+
+
+% Tweak the sections
+% scrpage2 needs to be before titlesec
+\usepackage{scrpage2}
+\usepackage{titlesec}
+%\titleformat{\section}{\large\scshape\raggedright}{}{0em}{}[\titlerule]
+\titleformat{\section}{\filbreak\color{headings}\large\raggedright}{}{0em}{}[\vskip -1.25pt\color{black}\titlerule]
+\titlespacing{\section}{0pt}{8pt}{4pt}
+
+
+% Used to get the "\textls"
+\usepackage{microtype}
+\newcommand*{\name}[1]{\textls[250]{\textsc{\Huge{#1}}}\vskip -9pt \rule{\textwidth}{1pt} \vskip -1pt}
+%\newcommand{\name}[1]{\textls[250]{\textsc{\Huge{#1}}}}
+%\newcommand{\name}[1]{\textsc{\Huge{#1}}}
+
+% Input environment
+\usepackage[utf8]{inputenc}
+
+% Margins
+\usepackage[margin=0.5in,includefoot]{geometry}
+
+
+% Command for seperator in address
+\newcommand*{\sep}{{\tiny\raisebox{1.5pt}{\color{symbol}$\blacklozenge$}} }
+
+
+% Tabular environment for employers & other related data
+\usepackage{tabularx,colortbl}
+% new command to color the experience name section gray
+\newcommand*{\gray}{\rowcolor[gray]{.90}}
+
+% Fancy listing
+\usepackage{enumitem}
+
+% Position environment
+\newsavebox{\titlesp}
+\newcommand*{\titles}[1]{\savebox{\titlesp}{\textit{#1}}}
+
+\newsavebox{\employerp}
+\newcommand*{\employer}[1]{\savebox{\employerp}{\textbf{#1}}}
+
+\newsavebox{\locationp}
+\newcommand*{\location}[1]{\savebox{\locationp}{#1}}
+
+\newsavebox{\datesp}
+\newcommand*{\dates}[1]{\savebox{\datesp}{#1}}
+
+% Need to have bold for the employer and italics for the title
+\newenvironment{position}
+{%
+    \vskip 1pt %
+    \tabularx{0.97\linewidth}{X}
+    \gray \usebox{\employerp} \hfill \usebox{\titlesp} \\
+    \gray \usebox{\locationp} \hfill \usebox{\datesp} \\
+}
+{%
+    \endtabularx
+}
+
+
+% Page number footer
+\pagestyle{scrheadings}
+\cfoot{\pagemark}
+
+
+\begin{document}
+
+% Title/Name
+\begin{center}
