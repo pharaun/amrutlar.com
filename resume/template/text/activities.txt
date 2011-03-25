@@ -1,0 +1,8 @@
+Activities
+
+{%- for a in activities %}
+    * {{ a.activity }} --- {{ a.vevent.dtstart}} -- {{ a.vevent.dtend }}
+{%- endfor %}
+
+
+

@@ -1,0 +1,9 @@
+Skills
+{% for sa in skills %}
+{{ sa.brief }}:
+    {% for s in sa.skill -%}
+    {{ s }}
+    {% endfor -%}
+{% endfor %}
+
+

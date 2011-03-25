@@ -1,0 +1,14 @@
+Education
+
+{% for edu in education -%}
+{{ edu.name }}
+{{ edu.degree.kind }} in {{ edu.degree.in }}
+{{ edu.adr.locality }}, {{ edu.adr.region }}
+Graduated: {{ edu.vevent.dtend }}
+{% if edu.pfos is defined -%}
+PFOS GPA: {{ edu.pfos.gpa }}/{{ edu.pfos.out_of }}
+{% endif -%}
+{{ edu.scholarship }}
+{% endfor %}
+
+

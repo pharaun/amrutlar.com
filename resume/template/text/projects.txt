@@ -1,0 +1,12 @@
+Projects
+
+{%- for p in projects %}
+    {%- if p.url is defined %}
+    * {{ p.project }} -- {{ p.url }}
+    {%- else %}
+    * {{ p.project }}
+    {%- endif %}
+{%- endfor %}
+
+
+

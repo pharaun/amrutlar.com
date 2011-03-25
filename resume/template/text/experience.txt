@@ -1,0 +1,12 @@
+Work Experience
+
+{% for e in experience -%}
+{{ e.title }}
+{{ e.employer }}
+{{ e.adr.locality }}, {{ e.adr.region }}
+{{ e.vevent.dtstart }} -- {{ e.vevent.dtend }}
+    {% for t in e.task -%}
+    * {{ t }}
+    {% endfor %}
+{% endfor %}
+

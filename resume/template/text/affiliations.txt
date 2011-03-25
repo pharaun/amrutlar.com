@@ -1,0 +1,8 @@
+Affiliations
+
+{%- for a in affiliations %}
+    * {{ a.name }} --- {{ a.vevent.dtstart }} -- {{ a.vevent.dtend }}
+{%- endfor %}
+
+
+

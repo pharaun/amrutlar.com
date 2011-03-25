@@ -1,0 +1,10 @@
+{{ contact.fn }}
+
+{{ contact.adr.street_address }}
+{{ contact.adr.extended_address }}
+{{ contact.adr.locality }}, {{ contact.adr.region }} {{contact.adr.postal_code }}
+
+{{ contact.email }}
+
+
+

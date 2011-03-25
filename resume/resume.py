@@ -2,6 +2,7 @@
 
 import os
 import re
+import sys
 import yaml
 import time
 import datetime
@@ -173,4 +174,6 @@ if __name__ == '__main__':
             out = render_section(data, env, filename)
             f.write(out)
 
-            print out
+            sys.stdout.write(out)
+
+    print

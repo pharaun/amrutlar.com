@@ -1,0 +1,58 @@
+# Configuration for the text resume generator
+---
+output_file: "output/resume.txt"
+
+resume:
+    input: "data/resume.yaml"
+
+    # Area/etc in the yaml file that needs to be filtered out if needed
+    filtering:
+        -   name: foo
+
+template:
+    # Global date formatting, can override
+    global_date_format: "%-m/%-d/%Y"
+
+    # Markers for templating stuff
+    block: [ '{%', '%}' ]
+    variable: [ '{{', '}}' ]
+    comment: [ '{#', '#}' ]
+
+    # Directory that holds the templates
+    path: "template/text/"
+
+    # Name needs to match here, will reuse it in section_ordering stuff
+    keyword:
+        -   name: header
+            file: "header.txt"
+        -   name: contact
+            file: "contact.txt"
+        -   name: experience
+            file: "experience.txt"
+        -   name: education
+            file: "education.txt"
+            date_format: "%B %Y"
+        -   name: skills
+            file: "skills.txt"
+        -   name: projects
+            file: "projects.txt"
+        -   name: affiliations
+            file: "affiliations.txt"
+            date_format: "%Y"
+        -   name: activities
+            file: "activities.txt"
+            date_format: "%Y"
+        -   name: references
+            file: "references.txt"
+        -   name: footer
+            file: "footer.txt"
+
+    ordering:
+        - contact
+        - experience
+        - education
+        - skills
+        - affiliations
+        - activities
+        - projects
+        - references
