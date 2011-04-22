@@ -2,18 +2,8 @@
 title: Projects
 menu: projects
 ---
-
-	    <!-- Begin Subpage Naviagtion -->
-	    <ul>
-		<li><a href="#">Project 1</a></li>
-		<li><a href="#">Project 2</a></li>
-		<li><a href="#">Project 3</a></li>
-	    </ul>
-	    <!-- End Subpage Naviagtion -->
-	    
-	    <h1>
-		Project navs
-	    </h1>
-	    <p>
-	    contents to come latter
-	    </p>
+<% @site.items.select {|i| i[:kind] == "project"}.sort_by{|p| p[:title].downcase}.each do |project| %>
+	    <div class="projects"
+		<%= project.content :rep => :summary %>
+	    </div>
+<% end %>

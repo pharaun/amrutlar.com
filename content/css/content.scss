@@ -13,7 +13,7 @@ $post-date-margin:	10px;
 
 
 // Paragraph formatting mixin
-@mixin paragraph($left-margin) {
+@mixin paragraph($left-margin, $text-indent) {
     p {
 	line-height:    140%;
 
@@ -21,7 +21,7 @@ $post-date-margin:	10px;
 	margin-left:    $left-margin;
 
 	& + p {
-	    text-indent:    30px;
+	    text-indent:    $text-indent;
 	}
     }
 }
@@ -60,7 +60,7 @@ $post-date-margin:	10px;
 	}
 
 	/* Content paragraph spacing */
-	@include paragraph(10px);
+	@include paragraph(10px, 30px);
 	
 	/* Plain link styling */
 	@include plain-link();
@@ -72,7 +72,7 @@ $post-date-margin:	10px;
         margin-bottom:  1em;
 
 	/* Make sure it matches the margin & width of .postDate */
-	@include paragraph($post-date-width + $post-date-margin);
+	@include paragraph($post-date-width + $post-date-margin, 30px);
     }
 
 
@@ -92,6 +92,11 @@ $post-date-margin:	10px;
 	&:last-child {
 	    margin-bottom:	0.25em;
 	}
+    }
+
+    /* Remove indenting for projects */
+    .projects {
+	@include paragraph(10px, 0px);
     }
 }
 

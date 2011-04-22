@@ -23,10 +23,22 @@ compile '/img/*/' do
     nil # Copy the rest
 end
 
+compile '/projects/*/' do
+    filter :erb
+    filter :kramdown
+    layout 'project'
+    layout 'default'
+end
+
+compile '/projects/*/', :rep => :summary do
+    filter :erb
+    filter :kramdown
+    layout 'project_summary'
+end
+
 compile '*' do
     filter :erb
     layout 'default'
-    filter :relativize_paths, :type => :html
 end
 
 
@@ -50,6 +62,15 @@ end
 
 route '/img/*/' do
     item.identifier.chop + '.' + item[:extension]
+end
+
+route '/projects/*/' do
+    item.identifier + 'index.html'
+end
+
+route '/projects/*/', :rep => :summary  do
+    # Don't output summary
+    nil
 end
 
 route '*' do

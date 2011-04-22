@@ -1,0 +1,29 @@
+<div class="projects">
+    <h1><%= link_to(@item[:title], @item) %></h1>
+    <%= yield %>
+
+    <table>
+	<% if @item[:sources] %>
+	<tr>
+	    <th>Sources</th>
+	    <td><%= link_to(@item[:sources], @item[:sources]) %></td>
+	</tr>
+	<% end %>
+
+	<% if @item[:documentation] %>
+	<tr>
+	    <th>Documentation</th>
+	    <td><%= link_to(@item[:documentation], @item[:documentation]) %></td>
+	</tr>
+	<% end %>
+
+	<% if @item[:licenses] %>
+	<tr>
+	    <th>Licenses</th>
+	    <td>
+		<%= listify_licenses(@item[:licenses]) %>
+	    </td>
+	</tr>
+	<% end %>
+    </table>
+</div>
