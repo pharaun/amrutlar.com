@@ -29,6 +29,7 @@ $default-border-radius:	15px;
 	list-style:	none;
 	line-height:	1.0;
 
+	// IE6 needs margin-right: 6% it seems
 	padding-top:	1.25em;
 	margin-right:	12%;
 	float:		right;
@@ -52,6 +53,9 @@ $default-border-radius:	15px;
 	color:		$link-color;
 	font-family:	Verdana, Geneva, sans-serif;
 	font-weight:	bold;
+
+	/* Background for unsupported browsers */
+	background: $link-first-gradient;
 
 	// Gradient for unselected navbar
 	// Need to add in support for other browser/fix it up properly
@@ -77,6 +81,9 @@ $default-border-radius:	15px;
 .resume #header #resume a,
 .about #header #about a {
     color:	$link-color;
+
+    /* Background for unsupported browsers */
+    background: $link-hover-first-gradient;
 
     // Gradient for selected/current page navbar
     // Need to add in support for other browser/fix it up properly

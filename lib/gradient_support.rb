@@ -38,6 +38,16 @@ module Sass::Script
   end
 
   module Functions
+    # return filter values for the legacy IE 6-9 browser filter
+    def grad_ie(color_list)
+      assert_list(color_list)
+      normalize_stops!(color_list)
+
+      start = color_list.values.first.color.inspect
+      last = color_list.values.last.color.inspect
+      Sass::Script::String.new("progid:DXImageTransform.Microsoft.gradient(StartColorStr='#{start}', EndColorStr='#{last}')")
+    end
+
     # returns color-stop() calls for use in webkit.
     def grad_color_stops(color_list)
       assert_list(color_list)
@@ -55,7 +65,7 @@ module Sass::Script
         last_value = stop
         "color-stop(#{stop.inspect}, #{pos.color.inspect})"
       end
-      
+
       Sass::Script::String.new(color_stops.join(", "))
     end
 

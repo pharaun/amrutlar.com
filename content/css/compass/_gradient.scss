@@ -30,6 +30,9 @@
 // - Chrome
 // - Safari
 // - Firefox 3.6
+// - Opera 11.10
+// - IE 10
+// - IE 6-9 (only if top to bottom)
 
 @mixin linear-gradient($color-stops, $start: top, $image: false) {
   // Firefox's gradient api is nice.
@@ -43,6 +46,17 @@
   }
   @if $experimental-support-for-mozilla {
     background-image: #{$background}-moz-linear-gradient($start, $color-stops);
+  }
+  @if $experimental-support-for-opera {
+    background-image: #{$background}-o-linear-gradient($start, $color-stops);
+  }
+  @if $experimental-support-for-microsoft {
+    background-image: #{$background}-ms-linear-gradient($start, $color-stops);
+  }
+  @if $legacy-support-for-ie {
+    @if $start == top {
+      filter: grad-ie($color-stops);
+    }
   }
   background-image: #{$background}linear-gradient($start, $color-stops);
 }
