@@ -2,6 +2,7 @@
     <h1><%= link_to(@item[:title], @item) %></h1>
     <%= yield %>
 
+    <!-- Move this stuff over to some sort of list -->
     <table>
 	<% if @item[:sources] %>
 	<tr>

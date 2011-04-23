@@ -47,13 +47,13 @@ $post-date-margin:	10px;
         background: none repeat scroll 0 0 rgba(204,204,204,0.5);
 
         @include border-radius();
-	
+
 	margin-top:     0.75em;
 	margin-bottom:  0.75em;
 
         /* Push in the text */
         padding:        0.1em 0.5em 0.25em 0.5em;
-	
+
 	/* Boxs/post spacing */
 	&:first-child {
 	    margin-top:	1em;
@@ -61,7 +61,7 @@ $post-date-margin:	10px;
 
 	/* Content paragraph spacing */
 	@include paragraph(10px, 30px);
-	
+
 	/* Plain link styling */
 	@include plain-link();
     }
@@ -162,7 +162,7 @@ $post-date-margin:	10px;
 /* Posts Footer */
 .postFooter {
     font-style:	    italic;
-    
+
     /* Make sure it matches the margin & width of .postDate */
     margin-left:    $post-date-width + $post-date-margin;
 

@@ -18,15 +18,15 @@ body {
     margin:	0;
     padding:	0;
 
-    /* This removes the border around the 
+    /* This removes the border around the
      * viewport in old versions of IE */
     border: 0;
 
     width:  100%;
 
-    /* The min-width property does not work 
+    /* The min-width property does not work
      * in old versions of Internet Explorer */
-    min-width: 40em;		
+    min-width: 40em;
     font-size: 90%;
 
     background: $background-color;
@@ -99,6 +99,10 @@ h4 {
 	margin-left:	$side-margin;
 	display:	inline;
 
+	/* Fix this for chromium */
+	float:		left;
+	padding-top:	0px;
+
 	font-size:	3em;
     }
 }
@@ -129,7 +133,7 @@ h4 {
     margin-bottom:  0.5em;
 
     padding: 0em 1em;
-    
+
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0.2);
 
     @include border-radius(15px);
