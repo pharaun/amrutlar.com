@@ -88,6 +88,9 @@ h4 {
 
     border-bottom: 1px solid #000;
 
+    // TODO: Consider transparent gif as fallback? (More browsers)
+    // CSS fallback for solid background + rgba
+    background:	    none repeat scroll 0 0 #cccccc;
     background:	    none repeat scroll 0 0 rgba(0, 0, 0, 0.2);
 
     p, h1, h2 {
@@ -99,7 +102,7 @@ h4 {
 	margin-left:	$side-margin;
 	display:	inline;
 
-	/* Fix this for chromium */
+	// This is a chromium and a few other picky browser fix
 	float:		left;
 	padding-top:	0px;
 
@@ -134,7 +137,10 @@ h4 {
 
     padding: 0em 1em;
 
-    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.2);
+    // TODO: Consider transparent gif as fallback? (More browsers)
+    // CSS fallback for solid background + rgba
+    background:	    none repeat scroll 0 0 #cccccc;
+    background:	    none repeat scroll 0 0 rgba(0, 0, 0, 0.2);
 
     @include border-radius(15px);
 

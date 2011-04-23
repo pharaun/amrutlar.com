@@ -44,7 +44,11 @@ $post-date-margin:	10px;
 
     /* Common content settings */
     .about, .resume, .projects, .post {
-        background: none repeat scroll 0 0 rgba(204,204,204,0.5);
+
+	// TODO: Consider transparent gif as fallback? (More browsers)
+	// CSS fallback for solid background + rgba
+	background:	    none repeat scroll 0 0 #e5e5e5;
+        background:	    none repeat scroll 0 0 rgba(204,204,204,0.5);
 
         @include border-radius();
 
@@ -105,18 +109,19 @@ $post-date-margin:	10px;
     display:	    block;
     float:	    left;
     line-height:    1.5em;
-    margin-top:	    6px;
+// Move all of this code over to "em" if possible? for IE
+//    margin-top:	    6px;
+    margin-top:	    -27px;
     margin-bottom:  10px;
     margin-left:    0px;
     margin-right:   $post-date-margin;
     text-align:	    center;
     width:	    $post-date-width;
 
+    // TODO: Consider transparent gif as fallback? (More browsers)
+    // CSS fallback for solid background + rgba
+    background:	    none repeat scroll 0 0 #730021;
     background: none repeat scroll 0 0 rgba(115, 0, 33, 1.0);
-/*    background: none repeat scroll 0 0 rgba(170, 0, 0, 1.0);	    Light Navbar red */
-/*    background: none repeat scroll 0 0 rgba(0, 51, 34, 1.0);	    Dark blue/green */
-/*    background: none repeat scroll 0 0 rgba(75,0,21,1.0);	    Super dark red */
-/*    background: none repeat scroll 0 0 rgba(139, 37, 0, 1.0);	    Dark orange/red */
 
     @include border-radius();
 
@@ -153,6 +158,7 @@ $post-date-margin:	10px;
 	font-family:    serif;
 	line-height:    1.524em;
 	margin:		0 10px;
+	margin-left:	$post-date-width + $post-date-margin;
 
 	/* Plain link styling */
 	@include plain-link();

@@ -1,0 +1,90 @@
+// IE specific code goes here
+@import "compass/gradient";
+
+// Enable Legacy support
+$legacy-support-for-ie:	    true;
+
+// Disable all of the other browser
+$experimental-support-for-mozilla: false;
+$experimental-support-for-webkit: false;
+$experimental-support-for-opera: false;
+$experimental-support-for-microsoft: false;
+$experimental-support-for-khtml: false;
+
+// Copying navbar gradient for now
+// Link base color
+$link-color:    #fff;
+
+// Navbar Link unselected gradient
+$link-first-gradient:   #730021;
+$link-last-gradient:    #400012;
+
+// Navbar Link selected/current page gradient
+// Flipped because we want bottom to top
+$link-hover-first-gradient:     #8c0028;
+$link-hover-last-gradient:      #730021;
+
+
+/* Header Style */
+#header {
+    background: none;
+    -ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#33000000,endColorstr=#33000000);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#33000000,endColorstr=#33000000);
+    zoom: 1;
+}
+
+/* Footer Style */
+#footer {
+    background: none;
+    -ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#33000000,endColorstr=#33000000);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#33000000,endColorstr=#33000000);
+    zoom: 1;
+
+    #altnav {
+	// TODO: Need some sort of background here for ie6?
+    }
+}
+
+/* General content styling */
+#content {
+    .about, .resume, .projects, .post {
+	background: none;
+	-ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#7fcccccc,endColorstr=#7fcccccc);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#7fcccccc,endColorstr=#7fcccccc);
+	zoom: 1;
+    }
+}
+
+/* Margin fix for ie6 */
+#header {
+//    ul {
+//	margin-right: 6%;
+//    }
+
+    a {
+	/* Background for unsupported browsers */
+	background: $link-first-gradient;
+
+	// Gradient for unselected navbar
+	// Need to add in support for other browser/fix it up properly
+	@include linear-gradient(color-stops($link-first-gradient, $link-last-gradient));
+
+    }
+}
+
+// Gradient for selected or current page navbar
+#header a:hover,
+.blog #header #blog a,
+.gallery #header #gallery a,
+.projects #header #projects a,
+.resume #header #resume a,
+.about #header #about a {
+    color:      $link-color;
+
+    /* Background for unsupported browsers */
+    background: $link-hover-first-gradient;
+
+    // Gradient for selected/current page navbar
+    // Need to add in support for other browser/fix it up properly
+    @include linear-gradient(color-stops($link-hover-last-gradient, $link-hover-first-gradient));
+}
