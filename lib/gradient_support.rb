@@ -38,6 +38,57 @@ module Sass::Script
   end
 
   module Functions
+    # return a color value for converting the alpha to a "greyscale picture"
+    def alpha_color(r, g, b, a)
+	assert_type r, :Number
+	assert_type g, :Number
+	assert_type b, :Number
+	assert_type a, :Number
+
+	unless (0..1).include?(a.value)
+	  raise ArgumentError.new("Alpha channel #{a.value} must be between 0 and 1")
+	end
+
+	# Normalize the source
+	source_r = r.value / 255.0
+	source_g = g.value / 255.0
+	source_b = b.value / 255.0
+	source_a = a.value
+
+	# Background is normalized (0-1) white which is 1.0
+	bg_r = 1.0
+	bg_g = 1.0
+	bg_b = 1.0
+
+	# Do the magic here - Overlay the transparent values/color on the background
+	red =   ((((1.0 - source_a) * bg_r) + (source_a * source_r)) * 255).to_i
+	green = ((((1.0 - source_a) * bg_g) + (source_a * source_g)) * 255).to_i
+	blue =  ((((1.0 - source_a) * bg_b) + (source_a * source_b)) * 255).to_i
+
+	Sass::Script::Color.new(:red => red, :green => green, :blue => blue)
+    end
+
+    # return filter value for the alpha gradient
+    def alpha_ie(r, g, b, a)
+	assert_type r, :Number
+	assert_type g, :Number
+	assert_type b, :Number
+	assert_type a, :Number
+
+	unless (0..1).include?(a.value)
+	  raise ArgumentError.new("Alpha channel #{a.value} must be between 0 and 1")
+	end
+
+	r = r.value.to_s(16).rjust(2, '0')
+	g = g.value.to_s(16).rjust(2, '0')
+	b = b.value.to_s(16).rjust(2, '0')
+	a = (a.value * 255).to_i.to_s(16).rjust(2, '0')
+
+	color = '#' + a + r + g + b
+
+      Sass::Script::String.new("progid:DXImageTransform.Microsoft.gradient(StartColorStr='#{color}', EndColorStr='#{color}')")
+    end
+
     # return filter values for the legacy IE 6-9 browser filter
     def grad_ie(color_list)
       assert_list(color_list)

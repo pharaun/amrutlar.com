@@ -24,43 +24,19 @@ $link-last-gradient:    #400012;
 $link-hover-first-gradient:     #8c0028;
 $link-hover-last-gradient:      #730021;
 
+// IE gradient mixin
+@mixin ie-gradient($r, $g, $b, $a) {
+    background: none;
+    -ms-filter: alpha-ie($r, $g, $b, $a);
+    filter: alpha-ie($r, $g, $b, $a);
+    zoom: 1;
+}
 
 /* Header Style */
 #header {
-    background: none;
-    -ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#33000000,endColorstr=#33000000);
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#33000000,endColorstr=#33000000);
-    zoom: 1;
-}
+    @include ie-gradient(0, 0, 0, 0.2);
 
-/* Footer Style */
-#footer {
-    background: none;
-    -ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#33000000,endColorstr=#33000000);
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#33000000,endColorstr=#33000000);
-    zoom: 1;
-
-    #altnav {
-	// TODO: Need some sort of background here for ie6?
-    }
-}
-
-/* General content styling */
-#content {
-    .about, .resume, .projects, .post {
-	background: none;
-	-ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#7fcccccc,endColorstr=#7fcccccc);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#7fcccccc,endColorstr=#7fcccccc);
-	zoom: 1;
-    }
-}
-
-/* Margin fix for ie6 */
-#header {
-//    ul {
-//	margin-right: 6%;
-//    }
-
+    // Gradient for unselected navbar
     a {
 	/* Background for unsupported browsers */
 	background: $link-first-gradient;
@@ -68,7 +44,18 @@ $link-hover-last-gradient:      #730021;
 	// Gradient for unselected navbar
 	// Need to add in support for other browser/fix it up properly
 	@include linear-gradient(color-stops($link-first-gradient, $link-last-gradient));
+    }
+}
 
+/* Footer Style */
+#footer {
+    @include ie-gradient(0, 0, 0, 0.2);
+}
+
+/* General content styling */
+#content {
+    .about, .resume, .projects, .post {
+	@include ie-gradient(204, 204, 204, 0.5);
     }
 }
 
@@ -85,6 +72,5 @@ $link-hover-last-gradient:      #730021;
     background: $link-hover-first-gradient;
 
     // Gradient for selected/current page navbar
-    // Need to add in support for other browser/fix it up properly
     @include linear-gradient(color-stops($link-hover-last-gradient, $link-hover-first-gradient));
 }
