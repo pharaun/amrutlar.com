@@ -38,6 +38,9 @@ $post-date-margin:	10px;
     }
 }
 
+/* Plain link styling */
+@include plain-link();
+
 /* General Content styling */
 #content {
     padding:	0em;
@@ -102,9 +105,9 @@ $post-date-margin:	10px;
     .projects {
 	@include paragraph(10px, 0px);
 
-	// Definition list settings
+	// Definition list settings for supplemental info in projects
 	dl {
-	    /* Make sure it matches the specified margin */
+	    /* Make sure it matches the paragraph indent space */
 	    margin-left:    10px;
 	}
 

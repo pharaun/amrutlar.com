@@ -3,10 +3,6 @@
 // Background color
 $background-color:  #fff;
 
-// Link base & hover color
-$link-color:	    #369;
-$link-hover-color:  #fff;
-
 // How much padding/space to grant on the margins to center the content
 $side-margin:	    12%;
 
@@ -36,17 +32,6 @@ body {
     background-repeat:	    no-repeat;
     background-position:    center bottom;
     background-attachment:  fixed;
-}
-
-
-// Can probably dry this up via the plain-link mixin in content.scss
-a {
-    color: $link-color;
-
-    &:hover {
-	color: $link-hover-color;
-	text-decoration: none;
-    }
 }
 
 h1, h2, h3 {
