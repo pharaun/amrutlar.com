@@ -1,7 +1,7 @@
 ---
 title: GTK+ Manga Viewer
 menu: projects
-kind: project
+kind: projects
 sources: https://github.com/pharaun/oneManga-gtk-viewer
 licenses: [:gplv2]
 ---

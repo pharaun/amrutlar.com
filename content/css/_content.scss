@@ -101,6 +101,17 @@ $post-date-margin:	10px;
     /* Remove indenting for projects */
     .projects {
 	@include paragraph(10px, 0px);
+
+	// Definition list settings
+	dl {
+	    /* Make sure it matches the specified margin */
+	    margin-left:    10px;
+	}
+
+	dt {
+	    font-weight:    bold;
+	}
+
     }
 }
 

@@ -1,7 +1,7 @@
 ---
 title: Ruby Tile engine
 menu: projects
-kind: project
+kind: projects
 sources: https://github.com/pharaun/ruby-tile
 licenses: [:simplified_bsd]
 ---

@@ -1,7 +1,7 @@
 ---
 title: Python Duplicate Image Finder
 menu: projects
-kind: project
+kind: projects
 sources: https://github.com/pharaun/python-duplicate-finder
 licenses: [:lgplv2]
 ---

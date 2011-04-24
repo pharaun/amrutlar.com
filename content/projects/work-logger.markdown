@@ -1,7 +1,7 @@
 ---
 title: Work Logger
 menu: projects
-kind: project
+kind: projects
 sources: https://github.com/pharaun/work-logger
 licenses: [:gplv2]
 ---

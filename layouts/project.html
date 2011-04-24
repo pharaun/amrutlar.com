@@ -3,28 +3,20 @@
     <%= yield %>
 
     <!-- Move this stuff over to some sort of list -->
-    <table>
+    <dl>
 	<% if @item[:sources] %>
-	<tr>
-	    <th>Sources</th>
-	    <td><%= link_to(@item[:sources], @item[:sources]) %></td>
-	</tr>
+	<dt>Sources</dt>
+	<dd><%= link_to(@item[:sources], @item[:sources]) %></dd>
 	<% end %>
 
 	<% if @item[:documentation] %>
-	<tr>
-	    <th>Documentation</th>
-	    <td><%= link_to(@item[:documentation], @item[:documentation]) %></td>
-	</tr>
+	<dt>Documentation</dt>
+	<dd><%= link_to(@item[:documentation], @item[:documentation]) %></dd>
 	<% end %>
 
 	<% if @item[:licenses] %>
-	<tr>
-	    <th>Licenses</th>
-	    <td>
-		<%= listify_licenses(@item[:licenses]) %>
-	    </td>
-	</tr>
+	<dt>Licenses</dt>
+	<%= listify_licenses(@item[:licenses]) %>
 	<% end %>
-    </table>
+    </dl>
 </div>

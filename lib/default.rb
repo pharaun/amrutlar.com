@@ -58,14 +58,7 @@ def annotate_license(link, comment)
 end
 
 def listify_licenses(licenses)
-    if licenses.size == 1
-	license, note = licenses.first
-	link = link_to_license(license)
-	link = annotate_license(link, note) if note
-	return link
-    end
-
-    lines = ["<ul>"]
+    lines = []
     licenses.each do |license|
 	note = nil
 	license, note = license
@@ -74,9 +67,8 @@ def listify_licenses(licenses)
 	if note
 	    link = annotate_license(link, note)
 	end
-	line = "<li>#{link}</li>"
+	line = "<dd>#{link}</dd>"
 	lines << line
     end
-    lines << "</ul>"
     lines.join("\n")
 end
