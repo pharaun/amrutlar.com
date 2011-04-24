@@ -1,5 +1,6 @@
 // IE specific code goes here
 @import "compass/gradient";
+@import "settings";
 
 // Enable Legacy support
 $legacy-support-for-ie:	    true;
@@ -10,27 +11,6 @@ $experimental-support-for-webkit: false;
 $experimental-support-for-opera: false;
 $experimental-support-for-microsoft: false;
 $experimental-support-for-khtml: false;
-
-// Copying navbar gradient for now
-// Link base color
-$link-color:    #fff;
-
-// Navbar Link unselected gradient
-$link-first-gradient:   #730021;
-$link-last-gradient:    #400012;
-
-// Navbar Link selected/current page gradient
-// Flipped because we want bottom to top
-$link-hover-first-gradient:     #8c0028;
-$link-hover-last-gradient:      #730021;
-
-// IE gradient mixin
-@mixin ie-gradient($r, $g, $b, $a) {
-    background: none;
-    -ms-filter: alpha-ie($r, $g, $b, $a);
-    filter: alpha-ie($r, $g, $b, $a);
-    zoom: 1;
-}
 
 /* Header Style */
 #header {
@@ -66,7 +46,7 @@ $link-hover-last-gradient:      #730021;
 .projects #header #projects a,
 .resume #header #resume a,
 .about #header #about a {
-    color:      $link-color;
+    color:      $nav-link-color;
 
     /* Background for unsupported browsers */
     background: $link-hover-first-gradient;

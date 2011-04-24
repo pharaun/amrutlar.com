@@ -1,42 +1,5 @@
 @import "compass/border-radius";
-
-// Link base color
-$link-color:		#970000;
-
-// Default border radius
-$default-border-radius:	5px;
-
-// Date box
-$post-date-text-color:	#fff;
-$post-date-width:	50px;
-$post-date-margin:	10px;
-
-
-// Paragraph formatting mixin
-@mixin paragraph($left-margin, $text-indent) {
-    p {
-	line-height:    140%;
-
-	/* Make sure it matches the specified margin */
-	margin-left:    $left-margin;
-
-	& + p {
-	    text-indent:    $text-indent;
-	}
-    }
-}
-
-// Plain link styling mixin
-@mixin plain-link {
-    a {
-	text-decoration:    none;
-	color: $link-color;
-
-	&:hover {
-	    text-decoration:    underline;
-	}
-    }
-}
+@import "settings";
 
 /* Plain link styling */
 @include plain-link();
@@ -52,7 +15,7 @@ $post-date-margin:	10px;
 	background:	none repeat scroll 0 0 alpha_color(204, 204, 204, 0.5);
         background:	none repeat scroll 0 0 rgba(204,204,204,0.5);
 
-        @include border-radius();
+        @include border-radius($content-border-radius);
 
 	margin-top:     0.75em;
 	margin-bottom:  0.75em;
@@ -64,9 +27,12 @@ $post-date-margin:	10px;
 	&:first-child {
 	    margin-top:	1em;
 	}
+	&:last-child {
+	    margin-bottom:  0.25em;
+	}
 
 	/* Content paragraph spacing */
-	@include paragraph(10px, 30px);
+	@include paragraph($paragraph-default-margin, $paragraph-indent);
 
 	/* Plain link styling */
 	@include plain-link();
@@ -74,11 +40,14 @@ $post-date-margin:	10px;
 
     /* Blog content settings */
     .post {
-        margin-top:         2em;
-        margin-bottom:  1em;
+//        margin-top:     1em;
+//        margin-bottom:  1em;
 
 	/* Make sure it matches the margin & width of .postDate */
-	@include paragraph($post-date-width + $post-date-margin, 30px);
+	@include paragraph($post-date-width + $post-date-margin, $paragraph-indent);
+
+	/* Not sure if this is ideal, will need to inspect latter and clearfix? */
+	overflow: auto;
     }
 
 
@@ -86,34 +55,47 @@ $post-date-margin:	10px;
     .about, .resume, .projects {
 	/* Box Header */
 	h1 {
-	    font-size:  1.5em;
+	    font-size:	    1.5em;
 	    font-weight:    bold;
 	    font-family:    serif;
 	    line-height:    1.524em;
-	    margin:     0 10px;
-
-	    color:  $link-color;
-	}
-
-	&:last-child {
-	    margin-bottom:	0.25em;
+	    margin:	    0 10px;
+	    color:	    $link-color;
 	}
     }
 
     /* Remove indenting for projects */
     .projects {
-	@include paragraph(10px, 0px);
+	@include paragraph($paragraph-default-margin, $paragraph-indent);
 
 	// Definition list settings for supplemental info in projects
 	dl {
-	    /* Make sure it matches the paragraph indent space */
-	    margin-left:    10px;
+	    // Make sure it matches the paragraph indent space
+	    margin-left:    $paragraph-default-margin;
 	}
 
 	dt {
 	    font-weight:    bold;
 	}
+    }
 
+    // Resume specific
+    .resume {
+	ul {
+	    margin-top:	0.1em;
+	}
+
+	p {
+	    margin-top:	    0em;
+	    margin-bottom:  0em;
+	}
+    }
+
+    #affiliations, #activities,
+    #personal_projects {
+	ul {
+	    padding-left:	30px;
+	}
     }
 }
 
@@ -125,7 +107,7 @@ $post-date-margin:	10px;
 // Move all of this code over to "em" if possible? for IE
 //    margin-top:	    6px;
     margin-top:	    -27px;
-    margin-bottom:  10px;
+    margin-bottom:  6px;
     margin-left:    0px;
     margin-right:   $post-date-margin;
     text-align:	    center;
@@ -135,7 +117,7 @@ $post-date-margin:	10px;
     background:	none repeat scroll 0 0 alpha_color(115, 0, 33, 1.0);
     background: none repeat scroll 0 0 rgba(115, 0, 33, 1.0);
 
-    @include border-radius();
+    @include border-radius($date-border-radius);
 
     color:  $post-date-text-color;
     font-family: sans-serif;

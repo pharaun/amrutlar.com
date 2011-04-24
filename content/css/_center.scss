@@ -1,13 +1,5 @@
 @import "compass/border-radius";
-
-// Background color
-$background-color:  #fff;
-
-// How much padding/space to grant on the margins to center the content
-$side-margin:	    12%;
-
-// Default border radius
-$default-border-radius:	20px;
+@import "settings";
 
 /* General styles */
 body {
@@ -25,7 +17,7 @@ body {
     min-width: 40em;
     font-size: 90%;
 
-    background: $background-color;
+    background: $site-background-color;
 
     /* Background image */
     background-image:	    url(/img/boston-skyline.jpg);
@@ -38,7 +30,7 @@ h1, h2, h3 {
     margin: .8em 0 .2em 0;
     padding: 0;
 }
-p {
+p, dl, ol, table {
     margin: .4em 0 .8em 0;
     padding: 0;
 }
@@ -104,8 +96,6 @@ h4 {
     margin-right:   $side-margin;
 
     padding: 0em 1em;
-
-    @include border-bottom-radius();
 }
 
 
@@ -125,7 +115,7 @@ h4 {
     background:	    none repeat scroll 0 0 alpha_color(0, 0, 0, 0.2);
     background:	    none repeat scroll 0 0 rgba(0, 0, 0, 0.2);
 
-    @include border-radius(15px);
+    @include border-radius($footer-border-radius);
 
     p {
 	padding:    10px;
