@@ -9,8 +9,11 @@
 <%= get_paragraphs(yield, 1) %>
 <div class="postFooter">
     <em>Categories:</em>
-    <!-- Need to fix up the comma for the last category -->
-    <% @item[:categories].each do |categories| %>
-    <a class="categories" href="#"><%= categories %></a>,
-    <% end %>
+    <%  delim = ""
+	str = ""
+	@item[:categories].each do |categories|
+	    str = "#{str}#{delim}<a class=\"categories\" href=\"#\">#{categories}</a>"
+	    delim = ", "
+	end %>
+    <%= str %>
 </div>
