@@ -255,4 +255,25 @@ activities:
 
 ---
 references:
-    -
+    - fn: Randal (Randy) Copeland
+      email: randy_copeland@ibm.com
+      phone: 1-978-899-2460
+      employer: IBM
+      position: Manager
+
+    - fn: Mark Wambach
+      email: mlwnbs@rit.edu
+      phone: 1-585-475-7958
+      employer: RIT - Hallmark
+      position: Manager
+
+    - fn: Karin Cross-Smith
+      email: kcross@us.ibm.com
+      phone: 1-585-415-5982
+      employer: IBM
+      position: Manager
+
+    - fn: Joseph Hamilton
+      email: jrhnpa@rit.edu
+      employer: RIT - NTID
+      position: Shop/Stage foreman
