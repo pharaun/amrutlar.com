@@ -8,11 +8,11 @@ summary: >-
 contact:
     fn: Anja Berens
     adr:
-        street_address: 225 Littleton Rd
-        extended_address: Bldg 10, Apt 206
-        locality: Chelmsford
-        region: MA
-        postal_code: 01824
+        street_address: 578 Arkansas Street
+        extended_address:
+        locality: San Francisco
+        region: CA
+        postal_code: 94107
     email: pharaun666@gmail.com
 
 ---
@@ -46,12 +46,12 @@ education:
             -   course: Software Architectures
             -   course: "Software Requirements & Specification"
             -   course: Software Usability
-                skill: 
+                skill:
                     - GUI/HCI
             -   course: "Software Process & Project Management"
             -   course: Principles of Concurrent Software Systems
             -   course: "Embedded & Real-Time Systems"
-                skill: 
+                skill:
                     - Assembly
                     - QNX
                     - C
@@ -146,6 +146,20 @@ skills:
 
 ---
 experience:
+    -   employer: Yelp
+        adr:
+            street_address: 706 Mission Street
+            locality: San Francisco
+            region: CA
+            postal_code: 94103
+        vevent:
+            dtstart: 2011-08-01
+            dtend:
+        title: Software Developer
+        task:
+            - Mass Email infrastructure development and improvements.
+            - Various general improvement to the codebase.
+
     -   employer: IBM
         adr:
             street_address: 550 King St
@@ -154,7 +168,7 @@ experience:
             postal_code: 01460
         vevent:
             dtstart: 2009-09-21
-            dtend:
+            dtend: 2011-07-12
         title: Software Developer
         task:
             - Integrated the ISA Lite application into Lotus Connection and added in support for over 25 languages.
@@ -178,7 +192,7 @@ experience:
             - Explored various approaches of doing virtual tours for the RIT campus.
             - Researched which software suite/framework would meet our requirements the best.
             - Created an approach document which detailed out each possible design/solution for the project.
-    
+
     -   employer: IBM
         adr:
             street_address: One Lomb Memorial Drive
