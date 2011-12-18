@@ -49,6 +49,6 @@ author_uri:     "http://amrutlar.com"
 # Deployment settings
 deploy:
     asram:
-        dst: "asram:/var/www/localhost/htdocs"
+        dst: "asram:/var/www"
     amrutlar:
         dst: "amrutlar.net:/var/www"
