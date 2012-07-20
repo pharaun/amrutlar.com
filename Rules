@@ -27,6 +27,19 @@ compile '/img/*/' do
     nil # Copy the rest
 end
 
+compile '/blog/*/' do
+    filter :erb
+    filter :kramdown
+    layout 'blog'
+    layout 'default'
+end
+
+compile '/blog/*/', :rep => :summary do
+    filter :erb
+    filter :kramdown
+    layout 'blog_summary'
+end
+
 compile '/projects/*/' do
     filter :erb
     filter :kramdown
@@ -66,6 +79,15 @@ end
 
 route '/img/*/' do
     item.identifier.chop + '.' + item[:extension]
+end
+
+route '/blog/*/' do
+    item.identifier + 'index.html'
+end
+
+route '/blog/*/', :rep => :summary  do
+    # Don't output summary
+    nil
 end
 
 route '/projects/*/' do

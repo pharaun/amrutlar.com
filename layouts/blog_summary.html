@@ -1,0 +1,16 @@
+<div class="postHeader">
+    <h1><%= link_to(@item[:title], @item) %></h1>
+    <div class="postDate">
+	<span class="day"><%= @item[:created_at].day %></span>
+	<span class="month"><%= @item[:created_at].strftime("%b") %></span>
+	<span class="year"><%= @item[:created_at].year %></span>
+    </div>
+</div>
+<%= get_paragraphs(yield, 1) %>
+<div class="postFooter">
+    <em>Categories:</em>
+    <!-- Need to fix up the comma for the last category -->
+    <% @item[:categories].each do |categories| %>
+    <a class="categories" href="#"><%= categories %></a>,
+    <% end %>
+</div>

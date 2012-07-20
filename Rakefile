@@ -16,7 +16,7 @@ task :create_post do
     year = time.year
     month = "%.2d" % time.month
 
-    path = "/posts/#{year}/#{month}/" + title.downcase.gsub(/ /, "-").gsub(/[^a-z]/i, '_')
+    path = "/blog/#{year}/#{month}/" + title.downcase.gsub(/ /, "-").gsub(/[^a-z]/i, '_')
 
     site.data_sources[0].
 	create_item(
