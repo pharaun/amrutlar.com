@@ -10,6 +10,7 @@
     <%= yield %>
     <div class="postFooter">
 	<em>Categories:</em>
+	<!-- ruby-1.9.2-p180 :002 > {"tag" => "url"}.map {|tag, url| "%s -> %s" % [tag,url]}.join(", ") -->
 	<%  delim = ""
 	    str = ""
 	    @item[:categories].each do |categories|
