@@ -17,7 +17,7 @@ body {
     background: #fff;
 
     /* Background image */
-    background-image: url(../img/boston-skyline.jpg);
+    background-image: url(/img/boston-skyline.jpg);
     background-repeat:	no-repeat;
     background-position: center bottom;
     background-attachment:  fixed;

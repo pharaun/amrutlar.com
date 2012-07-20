@@ -1,0 +1,131 @@
+Anja Berens
+
+225 Littleton Rd
+Bldg 10, Apt 206
+Chelmsford, MA 01824
+
+pharaun666@gmail.com
+
+
+Work Experience
+
+Software Developer
+IBM
+Littleton, MA
+9/21/2009 -- Present
+    * Integrated the ISA Lite application into Lotus Connection and added in support for over 25 languages.
+    * Created a new Antivirus codebase for integration into Lotus Connections.
+    * Updated the Configuration system for Lotus Connections.
+    * Wrote several scripts to speed up various repetitive testing or development tasks.
+    
+Researcher
+RIT/Hallmark
+Rochester, NY
+6/8/2009 -- 8/16/2009
+    * Explored various approaches of doing virtual tours for the RIT campus.
+    * Researched which software suite/framework would meet our requirements the best.
+    * Created an approach document which detailed out each possible design/solution for the project.
+    
+Co-op Pre-Professional Engineer
+IBM
+Rochester, NY
+3/10/2008 -- 8/22/2008
+    * Designed the architecture of the SymConnect plug-in for Lotus Symphony and Lotus Connections.
+    * Performed Quality Assurance for the SymConnect plug-in.
+    * Emphasized/added in Internationalization, and Accessibility support to the SymConnect Plug-in.
+    * Focused on the usability of the plug-in.
+    
+Co-op Pre-Professional Programmer
+IBM
+Tucson, AZ
+6/12/2006 -- 11/17/2006
+    * Built an automated test suite to assist in regression function testing of Object Access Method (OAM).
+    
+
+Education
+
+Rochester Institute of Technology
+Bachelor of Science in Software Engineering
+Rochester, NY
+Graduated: May 2009
+PFOS GPA: 3.05/4.0
+Presidential Scholarship
+
+
+Skills
+
+Programming Languages:
+    Java
+    Ruby
+    Perl
+    Python
+    SQL
+    Bash
+    Assembly
+    C++
+    
+Development Software:
+    Vim
+    Eclipse
+    Git
+    Subversion
+    CVS
+    ClearCase
+    Make
+    Ant
+    Valgrind
+    GCC/GDB
+    
+Misc:
+    SQLite
+    Berkley DB
+    Basic MySql
+    jUnit
+    nUnit
+    HTML
+    XML
+    CSS
+    GitHub
+    Firebug
+    Linux
+    
+Areas of Knowledge:
+    Software Engineering
+    Architecture
+    Concurrent Systems
+    Internationalization
+    Usability
+    Unicode
+    Network (Programming & Infrastructure)
+    Object Oriented Design
+    Requirements and Specifications
+    Formal Verification & Validation
+    Process & Project Management
+    UML
+    
+
+Affiliations
+    * Eagle Scout in Boy Scouts of America --- 1993 -- 2000
+
+
+Activities
+    * Stage Construction Crew for NTID Theater --- 2005 -- 2009
+    * Community Service with NTID Student Congress --- 2004 -- 2005
+    * Repainted a community center with IBM co-workers in Tucson, AZ --- 2006 -- 2006
+
+
+Projects
+    * Designed the initial communication protocol, general architecture, and the test plan for a robotics project for my senior project (6 months).
+    * Created the Software Requirements Specification for a collaborative classroom note-taking application.
+    * Chord Peer-to-peer system on top of a router simulator which used the RIP routing protocol.
+    * Designed, Coded, and Tested a database subsystem for a Java based spelling racer game.
+    * Designed, Coded, and Tested a parser for a copier machine simulator.
+    * Created a Work Logger in Ruby & GTK. -- https://github.com/pharaun/work-logger
+    * Created a duplicate image finder in Python. -- https://github.com/pharaun/python-duplicate-finder
+    * Explored OpenGL and subdivision in Ruby, C, & Assembly. -- https://github.com/pharaun/ruby-tile
+    * Started on a Manga/Webcomic viewer in Perl & GTK then ported it over to Ruby. -- https://github.com/pharaun/oneManga-gtk-viewer
+    * Personal site -- http://amrutlar.com -- a longterm work in progress in CSS3, Ruby, and Python. -- http://amrutlar.com
+
+
+References
+    * Available upon request

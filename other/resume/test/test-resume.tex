@@ -1,0 +1,258 @@
+\documentclass[letterpaper, paper=letter, pagesize, oneside, final]{scrartcl}
+
+% Fix page size
+\setlength{\pdfpagewidth}{\paperwidth}
+\setlength{\pdfpageheight}{\paperheight}
+
+% Set up the symbols - email & phone
+%\usepackage{bbding}
+\RequirePackage{color,graphicx}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{amssymb}
+
+
+% Bullet
+\newcommand*{\bul}{\ensuremath{\bullet}\rule{0.5em}{0pt}}
+
+
+% Set up hyperref package, colors for link, text and headings
+\usepackage[pdftex]{hyperref}
+\definecolor{linkcolour}{HTML}{730021}	%dark red
+\definecolor{shade}{HTML}{D4D7FE}	%light blue shade
+\definecolor{text1}{HTML}{2b2b2b}	%text is almost black
+\definecolor{headings}{HTML}{730021}	%dark red
+\definecolor{symbol}{HTML}{730021}	%dark red
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour, linkcolor=linkcolour}
+
+% Email command
+\newcommand*{\email}[1]{%
+    \href{mailto:#1}{#1}%
+}
+
+
+% Tweak the sections
+% scrpage2 needs to be before titlesec
+\usepackage{scrpage2}
+\usepackage{titlesec}
+%\titleformat{\section}{\large\scshape\raggedright}{}{0em}{}[\titlerule]
+\titleformat{\section}{\filbreak\color{headings}\large\raggedright}{}{0em}{}[\vskip -1.25pt\color{black}\titlerule]
+\titlespacing{\section}{0pt}{8pt}{4pt}
+
+
+% Used to get the "\textls"
+\usepackage{microtype}
+\newcommand*{\name}[1]{\textls[250]{\textsc{\Huge{#1}}}\vskip -9pt \rule{\textwidth}{1pt} \vskip -1pt}
+%\newcommand{\name}[1]{\textls[250]{\textsc{\Huge{#1}}}}
+%\newcommand{\name}[1]{\textsc{\Huge{#1}}}
+
+% Input environment
+\usepackage[utf8]{inputenc}
+
+% Margins
+\usepackage[margin=0.5in]{geometry} % Margins
+
+% Command for seperator in address
+\newcommand*{\sep}{{\tiny\raisebox{1.5pt}{\color{symbol}$\blacklozenge$}} }
+
+
+% Tabular environment for employers & other related data
+\usepackage{tabularx,colortbl}
+% new command to color the experience name section gray
+\newcommand*{\gray}{\rowcolor[gray]{.90}}
+
+% Fancy listing
+\usepackage{enumitem}
+
+% Position environment
+\newsavebox{\titlesp}
+\newcommand*{\titles}[1]{\savebox{\titlesp}{\textit{#1}}}
+
+\newsavebox{\employerp}
+\newcommand*{\employer}[1]{\savebox{\employerp}{\textbf{#1}}}
+
+\newsavebox{\locationp}
+\newcommand*{\location}[1]{\savebox{\locationp}{#1}}
+
+\newsavebox{\datesp}
+\newcommand*{\dates}[1]{\savebox{\datesp}{#1}}
+
+% Need to have bold for the employer and italics for the title
+\newenvironment{position}
+{%
+    \vskip 1pt %
+    \tabularx{0.97\linewidth}{X}
+    \gray \usebox{\employerp} \hfill \usebox{\titlesp} \\
+    \gray \usebox{\locationp} \hfill \usebox{\datesp} \\
+}
+{%
+    \endtabularx
+}
+
+
+\begin{document}
+\pagestyle{empty}
+
+% Title/Name
+\begin{center}
+
+% Still want to play around with this, maybe return the name to be left aligned and the address/contact right aligned
+% and also add in some negative vspace to eat up the spacing between work experience and the address/etc
+\name{Anja Berens}
+225 Littleton Rd \sep Bldg 10 Apt 206 \sep Chelmsford, Ma 01824 \sep \email{pharaun666@gmail.com}
+
+% Work Experiences
+\section{Work Experiences}
+
+\titles{Software Developer}
+\employer{IBM}
+\location{Littleton, Ma}
+\dates{9/21/2009 -- Present}
+\begin{position}
+\end{position}
+\begin{itemize}[style=sameline,
+		    itemsep=1pt,
+		    parsep=0pt,
+		    topsep=2pt,
+		    partopsep=2pt,
+		    leftmargin=10mm]
+    \item Integerated the ISA Lite application into Lotus Connection and added in support for over 25 languages.
+    \item Updated the Configuration system for Lotus Connections.
+    \item Various other development tasks such as documentation, testing, and designing.
+\end{itemize}
+
+\titles{Software Developer}
+\employer{IBM}
+\location{Littleton, Ma}
+\dates{9/21/2009 -- Present}
+\begin{position}
+\end{position}
+\begin{itemize}[style=sameline,
+		    itemsep=1pt,
+		    parsep=0pt,
+		    topsep=2pt,
+		    partopsep=2pt,
+		    leftmargin=10mm]
+    \item Research into virtual tour of RIT campus with Mark Wambach.
+    \item Explored various approaches of doing a virtual tour and researched which software suite/framework would work the best.
+    \item Created a detailed approach document and detailed out various possible design/solution for the project.
+\end{itemize}
+
+\titles{Software Developer}
+\employer{IBM}
+\location{Littleton, Ma}
+\dates{9/21/2009 -- Present}
+\begin{position}
+\end{position}
+\begin{itemize}[style=sameline,
+		    itemsep=1pt,
+		    parsep=0pt,
+		    topsep=2pt,
+		    partopsep=2pt,
+		    leftmargin=10mm]
+    \item Designed the Architecture of the SymConnect plug-in for Lotus Symphony and Lotus Connections.
+    \item Performed Quality Assurance for the SymConnect plug-in.
+    \item Emphasized/added in Internationalization, and Accessibility support to the SymConnect Plug-in, along with a focus on usability.
+\end{itemize}
+
+\titles{Software Developer}
+\employer{IBM}
+\location{Littleton, Ma}
+\dates{9/21/2009 -- Present}
+\begin{position}
+\end{position}
+\begin{itemize}[style=sameline,
+		    itemsep=1pt,
+		    parsep=0pt,
+		    topsep=2pt,
+		    partopsep=2pt,
+		    leftmargin=10mm]
+    \item Integerated the ISA Lite application into Lotus Connection and added in support for over 25 languages.
+    \item Updated the Configuration system for Lotus Connections.
+    \item Various other development tasks such as documentation, testing, and designing.
+\end{itemize}
+
+\section{Education}
+
+\begin{tabularx}{0.97\linewidth}{Xr}
+\textbf{Rochester Institute of Technology} & Bachelor of Science in \textbf{Software Engineering} \\
+Rochester, NY & Graduated: May 2009 \\
+PFOS GPA: 3.05/4.0 & Presidental Scholarship \\
+\end{tabularx}
+
+%\section{Course Work}
+%Course: Computer Science 1-4
+%    Skill:  Java  C++ 
+%Course: Data Communication \& Network I \& II
+%Course: Professional Communications
+%Course: Science, Technology, Values
+%Course: Computer Science Theory
+%Course: Software Verification \& Validation
+%Course: Software Architectures
+%Course: Software Requirements \& Specification
+%Course: Software Usability
+%    Skill:  GUI/HCI 
+%Course: Software Process \& Project Management
+%Course: Principles of Concurrent Software Systems
+%Course: Embedded \& Real-Time Systems
+%    Skill:  Assembly  QNX  C 
+%Course: Computer Organization
+%    Skill:  CPU Architecture \& Design  Assembly  Digital Logic 
+
+\section{Skills}
+
+\vskip -6pt
+% Remove the tabular env when we can shrink the paragraph slightly
+\begin{tabularx}{0.97\linewidth}{X}
+\begin{description}[style=sameline,
+		    itemsep=1pt,
+		    parsep=0pt,
+		    topsep=0pt,
+		    partopsep=0pt,
+		    leftmargin=5mm,
+		    font=\rm\bf]
+    \item[API:] jUnit, nUnit, Eclipse OSGi
+    \item[Database:] sqlite, DB2
+    \item[Operating System:] UNIX/Linux, z/OS, QNX Neutrino RTOS, Microsoft Windows, DOS
+    \item[Programming Languages:] Java, Ruby, Perl, Shell Scripting - Bash, Assembly, SQL, C++, Haskell, JCL, REXX, HTML, CSS, XML
+    \item[Development Software:] Vim, Eclipse, GCC/GDB, Make, Valgrind, CVS, Subversion, GIT, ClearCase, Visual Studio, Ant
+    \item[Area of Knowledge:] Software Engineering, Architecture, Concurrent Systems, Object Oriented Design, UML, Requirements and Specifications, Formal Verification \& Validation, Usability, Process \& Project Management, Network (Programming \& Infrastructure)
+\end{description}
+\end{tabularx}
+
+\section{Projects}
+
+\vskip 2pt
+\begin{itemize}[style=sameline,
+		    itemsep=1pt,
+		    parsep=0pt,
+		    topsep=0pt,
+		    partopsep=0pt,
+		    labelindent=2cm,
+		    rightmargin=5mm]
+    \item Created the inital communication protocol, general architecture, and the test plan along with the test cases for a robotics project for my senior project (6 months).
+    \item Created the Software Requirements Specification for a collaborative classroom note-taking application.
+    \item Created a router simulator for simulating the RIP routing protocol, then implemented the Chord Peer-to-peer system on top of the router simulator.
+    \item Designed, Coded, and Tested a database subsystem for a Java based spelling racer game. The database subsystem was an interface to a local/remote SQL database.
+    \item Designed, Coded, and Tested a parser for a copier machine simulator. The parser constructed a tree which was then interpreted to get the needed information to run the simulator.
+\end{itemize}
+
+\section{Affiliations}
+
+\begin{tabularx}{0.97\linewidth}{Xr}
+Eagle Scout in Boy Scouts of America & 1993 -- 2000 \\
+\end{tabularx}
+
+\section{Activities}
+
+\begin{tabularx}{0.97\linewidth}{Xr}
+Stage Construction Crew for NTID Theater & 2005 -- 2009 \\
+Repainted a community center with IBM co-workers in Tucson, Az & 2006 \\
+Community Service with NTID Student Congress & 2004 -- 2005 \\
+\end{tabularx}
+
+\section{References}
+
+\parbox{0.945\linewidth}{Available upon request}
+
+\end{center}
+\end{document}
