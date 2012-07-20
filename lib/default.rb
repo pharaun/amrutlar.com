@@ -9,6 +9,50 @@ include Nanoc3::Helpers::Text
 
 require 'nokogiri'
 
+class Nanoc3::Filters::ColorizeSyntax
+  DEFAULT_COLORIZER = :pygmentize # dh: delete this line to stick to coderay
+  require 'nokogiri'
+
+  def run(content, params={})
+    # Take colorizers from parameters
+    @colorizers = Hash.new(DEFAULT_COLORIZER)
+    (params[:colorizers] || {}).each_pair do |language, colorizer|
+      @colorizers[language] = colorizer
+    end
+
+    # Colorize
+    doc = Nokogiri::HTML.fragment(content)
+    # dh: this line differs from the original implementation, to be compatible with kramdown
+    doc.css('pre [class*=""] > code').each do |element|
+      # Get language
+      match = element.parent['class']
+      next if match.nil?
+      language = match
+
+      # Highlight
+      highlighted_code = highlight(element.inner_text, language, params)
+      element.inner_html = highlighted_code
+    end
+
+    doc.to_xhtml.gsub(/<pre(.+?)?>[\s\n]+<code>/, "<pre\\1><code>") \
+		.gsub("</code>\n</pre>", "</code></pre>") \
+		.gsub(/<pre class="(.+?)?">/, "<pre class=\"highlight\">" ) # Set it to highlight
+  end
+
+  private
+  def pygmentize(code, language, params={})
+    content = nil
+    IO.popen("pygmentize -O encoding=utf-8 -l #{language} -f html", "r+") do |io|
+      io.write(code)
+      io.close_write
+      content = io.read
+    end
+    doc = Nokogiri::HTML.fragment(content)
+    # dh: only get the code, not the wrapping div+pre
+    doc.css('div > pre').first.inner_html
+  end
+end
+
 # This is just some syntactical sugar that we use later
 # Don't worry about it for now.
 class Nanoc3::Item

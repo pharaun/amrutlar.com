@@ -30,6 +30,7 @@ end
 compile '/blog/*/' do
     filter :erb
     filter :kramdown, :auto_ids => false
+    filter :colorize_syntax
     layout 'blog'
     layout 'default'
 end
@@ -37,12 +38,14 @@ end
 compile '/blog/*/', :rep => :summary do
     filter :erb
     filter :kramdown, :auto_ids => false
+    filter :colorize_syntax
     layout 'blog_summary'
 end
 
 compile '/projects/*/' do
     filter :erb
     filter :kramdown, :auto_ids => false
+    filter :colorize_syntax
     layout 'project'
     layout 'default'
 end
@@ -50,6 +53,7 @@ end
 compile '/projects/*/', :rep => :summary do
     filter :erb
     filter :kramdown, :auto_ids => false
+    filter :colorize_syntax
     layout 'project_summary'
 end
 
