@@ -29,27 +29,27 @@ end
 
 compile '/blog/*/' do
     filter :erb
-    filter :kramdown
+    filter :kramdown, :auto_ids => false
     layout 'blog'
     layout 'default'
 end
 
 compile '/blog/*/', :rep => :summary do
     filter :erb
-    filter :kramdown
+    filter :kramdown, :auto_ids => false
     layout 'blog_summary'
 end
 
 compile '/projects/*/' do
     filter :erb
-    filter :kramdown
+    filter :kramdown, :auto_ids => false
     layout 'project'
     layout 'default'
 end
 
 compile '/projects/*/', :rep => :summary do
     filter :erb
-    filter :kramdown
+    filter :kramdown, :auto_ids => false
     layout 'project_summary'
 end
 
