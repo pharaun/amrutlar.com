@@ -6,6 +6,7 @@ kind: article
 categories:
   - nanoc
 uuid: f86c3870-5382-012e-a95c-002590093b37
+publish: true
 description: Documenting the Creation of this Site
 ---
 {:options auto_ids="false" /}

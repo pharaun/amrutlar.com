@@ -7,6 +7,7 @@ categories:
   - CJK
   - LaTeX
 uuid: 6e136050-50dc-012e-a95b-002590093b37
+publish: true
 description: Documenting how to setup CJK support in LaTeX
 ---
 {:options auto_ids="false" /}

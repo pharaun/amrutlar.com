@@ -5,7 +5,7 @@ require 'uuid'
 task :create_post do
     # Check path
     if ENV['title'].nil?
-	$stderr.puts('You need to specify a title - rake create_post title="project name"')
+	$stderr.puts('You need to specify a title - rake create_post title="post title"')
 	break
     end
 
@@ -18,13 +18,14 @@ task :create_post do
     month = "%.2d" % time.month
 
     path = "/blog/#{year}/#{month}/" + title.downcase.gsub(/ /, "-") \
-						    .gsub(/[^\w]/i, '_') \
+						    .gsub(/[^\w-]/i, '_') \
 						    .gsub(/_{2,}/, '_') \
-						    .gsub(/(^[_-]+)|([_-]+$)/, '')
+						    .gsub(/(^[_-]+)|([_-]+$)/, '') \
+						    .gsub(/((-_)|(_-))/, '_')
 
     site.data_sources[0].
 	create_item(
-	    'Hello, this is a new blog post', # the content
+	    '{:options auto_ids="false" /} Hello, this is a new blog post', # the content
 	    { # the attributes
 		:title => ENV['title'],
 		:created_at => time,
@@ -32,6 +33,7 @@ task :create_post do
 		:kind => "article",
 		:categories => nil,
 		:uuid => UUID.generate,
+		:publish => false,
 		:description => "New blog post!"
 	    },
 	    path.cleaned_identifier, # the path
@@ -55,9 +57,10 @@ task :create_project do
     site = Nanoc3::Site.new('.')
 
     path = "/projects/" + title.downcase.gsub(/ /, "-") \
-					.gsub(/[^\w]/i, '_') \
+					.gsub(/[^\w-]/i, '_') \
 					.gsub(/_{2,}/, '_') \
-					.gsub(/(^[_-]+)|([_-]+$)/, '')
+					.gsub(/(^[_-]+)|([_-]+$)/, '') \
+					.gsub(/((-_)|(_-))/, '_')
 
     site.data_sources[0].
 	create_item(
