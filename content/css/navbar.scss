@@ -1,0 +1,84 @@
+@import "compass/border-radius";
+@import "compass/gradient";
+
+// Link base color
+$link-color:	#fff;
+
+// Navbar Link unselected gradient
+$link-first-gradient:	#730021;
+$link-last-gradient:	#400012;
+
+// Navbar Link selected/current page gradient
+// Flipped because we want bottom to top
+$link-hover-first-gradient:	#8c0028;
+$link-hover-last-gradient:	#730021;
+
+// Default border radius
+$default-border-radius:	15px;
+
+
+/* Navbar Structure and Styling */
+#header {
+    /* Structure */
+    ul, ul * {
+	margin:	    0;
+	padding:    0;
+    }
+
+    ul {
+	list-style:	none;
+	line-height:	1.0;
+
+	padding-top:	1.2em;
+	margin-right:	12%;
+	float:		right;
+    }
+
+    li {
+	display:    inline;
+	float:	    left;
+    }
+
+    a {
+	float:		    left;
+	display:	    block;
+	text-decoration:    none;
+    }
+
+
+    /* Styling */
+    a {
+	padding:	0.75em 1em;
+	color:		$link-color;
+	font-family:	Verdana, Geneva, sans-serif;
+	font-weight:	bold;
+
+	// Gradient for unselected navbar
+	// Need to add in support for other browser/fix it up properly
+	@include linear-gradient(color-stops($link-first-gradient, $link-last-gradient));
+    }
+
+    ul li {
+	&:first-child a {
+	    @include border-top-left-radius();
+	}
+
+	&:last-child a {
+	    @include border-top-right-radius();
+	}
+    }
+}
+
+// Gradient for selected or current page navbar
+#header a:hover,
+.blog #header #blog a,
+.gallery #header #gallery a,
+.projects #header #projects a,
+.resume #header #resume a,
+.about #header #about a {
+    color:	$link-color;
+
+    // Gradient for selected/current page navbar
+    // Need to add in support for other browser/fix it up properly
+    @include linear-gradient(color-stops($link-hover-last-gradient, $link-hover-first-gradient));
+}

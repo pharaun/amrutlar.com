@@ -1,0 +1,166 @@
+@import "compass/border-radius";
+
+// Link base color
+$link-color:		#970000;
+
+// Default border radius
+$default-border-radius:	5px;
+
+// Date box
+$post-date-text-color:	#fff;
+$post-date-width:	50px;
+$post-date-margin:	10px;
+
+
+// Paragraph formatting mixin
+@mixin paragraph($left-margin) {
+    p {
+	line-height:    140%;
+
+	/* Make sure it matches the specified margin */
+	margin-left:    $left-margin;
+
+	& + p {
+	    text-indent:    30px;
+	}
+    }
+}
+
+// Plain link styling mixin
+@mixin plain-link {
+    a {
+	text-decoration:    none;
+	color: $link-color;
+
+	&:hover {
+	    text-decoration:    underline;
+	}
+    }
+}
+
+/* General Content styling */
+#content {
+    padding:	0em;
+
+    /* Common content settings */
+    .about, .resume, .projects, .post {
+        background: none repeat scroll 0 0 rgba(204,204,204,0.5);
+
+        @include border-radius();
+	
+	margin-top:     0.75em;
+	margin-bottom:  0.75em;
+
+        /* Push in the text */
+        padding:        0.1em 0.5em 0.25em 0.5em;
+	
+	/* Boxs/post spacing */
+	&:first-child {
+	    margin-top:	1em;
+	}
+
+	/* Content paragraph spacing */
+	@include paragraph(10px);
+	
+	/* Plain link styling */
+	@include plain-link();
+    }
+
+    /* Blog content settings */
+    .post {
+        margin-top:         2em;
+        margin-bottom:  1em;
+
+	/* Make sure it matches the margin & width of .postDate */
+	@include paragraph($post-date-width + $post-date-margin);
+    }
+
+
+    /* Common .about, .resume, .projects content settings */
+    .about, .resume, .projects {
+	/* Box Header */
+	h1 {
+	    font-size:  1.5em;
+	    font-weight:    bold;
+	    font-family:    serif;
+	    line-height:    1.524em;
+	    margin:     0 10px;
+
+	    color:  $link-color;
+	}
+
+	&:last-child {
+	    margin-bottom:	0.25em;
+	}
+    }
+}
+
+/* Date Stamp formatting */
+.postDate {
+    display:	    block;
+    float:	    left;
+    line-height:    1.5em;
+    margin-top:	    6px;
+    margin-bottom:  10px;
+    margin-left:    0px;
+    margin-right:   $post-date-margin;
+    text-align:	    center;
+    width:	    $post-date-width;
+
+    background: none repeat scroll 0 0 rgba(115, 0, 33, 1.0);
+/*    background: none repeat scroll 0 0 rgba(170, 0, 0, 1.0);	    Light Navbar red */
+/*    background: none repeat scroll 0 0 rgba(0, 51, 34, 1.0);	    Dark blue/green */
+/*    background: none repeat scroll 0 0 rgba(75,0,21,1.0);	    Super dark red */
+/*    background: none repeat scroll 0 0 rgba(139, 37, 0, 1.0);	    Dark orange/red */
+
+    @include border-radius();
+
+    color:  $post-date-text-color;
+    font-family: sans-serif;
+
+    .day {
+	font-size:	2em;
+	padding-top:    0.4em;
+	padding-bottom: 0.2em;
+    }
+
+    .month {
+	font-variant:   small-caps;
+	margin-bottom: -0.2em;
+	letter-spacing: 0.1em;
+    }
+
+    .year {
+	margin-top:    -0.2em;
+	padding-bottom: 0.2em;
+    }
+
+    span {
+	display:	block;
+    }
+}
+
+/* Posts Header */
+.postHeader {
+    h1 {
+	font-size:	1.5em;
+	font-weight:    bold;
+	font-family:    serif;
+	line-height:    1.524em;
+	margin:		0 10px;
+
+	/* Plain link styling */
+	@include plain-link();
+    }
+}
+
+/* Posts Footer */
+.postFooter {
+    font-style:	    italic;
+    
+    /* Make sure it matches the margin & width of .postDate */
+    margin-left:    $post-date-width + $post-date-margin;
+
+    /* Plain link styling */
+    @include plain-link();
+}

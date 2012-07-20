@@ -11,6 +11,7 @@
 #   because “*” matches zero or more characters.
 
 compile '/css/*/' do
+    filter :sass, :syntax => :scss
     filter :relativize_paths, :type => :css
 end
 
@@ -29,8 +30,18 @@ compile '*' do
 end
 
 
+route '/css/_*/' do
+    # Don't output partials
+    nil
+end
+
+route '/css/compass/*' do
+    # Don't output compass framework
+    nil
+end
+
 route '/css/*/' do
-    item.identifier.chop + '.' + item[:extension]
+    item.identifier.chop + '.css'
 end
 
 route '/img/boston-skyline/' do
