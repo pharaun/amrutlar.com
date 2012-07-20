@@ -1,8 +1,0 @@
-Test on multiple browser for "appearances"
-
-subpage menu for projects page
-
-Fill out the rakefile to add in more build process/etc to generate the website
-as needed
-
-http://winelibrary.com/
