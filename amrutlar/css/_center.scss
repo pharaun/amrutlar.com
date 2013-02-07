@@ -1,0 +1,128 @@
+@import "compass/border-radius";
+@import "settings";
+
+/* General styles */
+body {
+    margin:	0;
+    padding:	0;
+
+    /* This removes the border around the
+     * viewport in old versions of IE */
+    border: 0;
+
+    width:  100%;
+
+    /* The min-width property does not work
+     * in old versions of Internet Explorer */
+    min-width: 40em;
+    font-size: 90%;
+
+    background: $site-background-color;
+
+    /* Background image */
+    background-image:	    url(/img/boston-skyline.jpg);
+    background-repeat:	    no-repeat;
+    background-position:    center bottom;
+    background-attachment:  fixed;
+}
+
+h1, h2, h3 {
+    margin: .8em 0 .2em 0;
+    padding: 0;
+}
+p, dl, ol, table {
+    margin: .4em 0 .8em 0;
+    padding: 0;
+}
+img {
+    margin: 10px 0 5px;
+}
+
+
+/* Typography */
+h1 {
+    font-size:	218%;
+}
+
+h2 {
+    font-size:	164%;
+}
+
+h3 {
+    font-size:	145%;
+}
+
+h4 {
+    font-size:	118%;
+}
+
+
+/* Header styles */
+#header {
+    clear: both;
+    float: left;
+    width: 100%;
+
+    border-bottom: 1px solid #000;
+
+    // CSS fallback for solid background + rgba
+    background:	    none repeat scroll 0 0 alpha_color(0, 0, 0, 0.2);
+    background:	    none repeat scroll 0 0 rgba(0, 0, 0, 0.2);
+
+    p, h1, h2 {
+	padding:    .4em 15px 0 15px;
+	margin:	    0;
+    }
+
+    h1 {
+	margin-left:	$side-margin;
+	display:	inline;
+
+	// This is a chromium and a few other picky browser fix
+	float:		left;
+	padding-top:	0px;
+
+	font-size:	3em;
+    }
+}
+
+
+/* Body Styles */
+#content {
+    clear:	both;
+    overflow:	hidden;
+    position:	relative;
+    margin-left:    $side-margin;
+    margin-right:   $side-margin;
+
+    padding: 0em 1em;
+}
+
+
+/* Footer styles */
+#footer {
+    clear:	both;
+    overflow:	hidden;
+    position:	relative;
+    margin-top:	    1em;
+    margin-left:    $side-margin;
+    margin-right:   $side-margin;
+    margin-bottom:  0.5em;
+
+    padding: 0em 1em;
+
+    // CSS fallback for solid background + rgba
+    background:	    none repeat scroll 0 0 alpha_color(0, 0, 0, 0.2);
+    background:	    none repeat scroll 0 0 rgba(0, 0, 0, 0.2);
+
+    @include border-radius($footer-border-radius);
+
+    p {
+	padding:    10px;
+	margin:	    0;
+    }
+    #altnav {
+	float:	    right;
+	text-align: right;
+    }
+}

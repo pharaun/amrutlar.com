@@ -4,3 +4,8 @@ tmp
 other/resume/test
 other/smugmug
 .sass-cache
+_cache
+site
+_site
+*.o
+*.hi

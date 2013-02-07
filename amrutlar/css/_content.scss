@@ -1,0 +1,171 @@
+@import "compass/border-radius";
+@import "settings";
+
+/* Plain link styling */
+@include plain-link();
+
+/* General Content styling */
+#content {
+    padding:	0em;
+
+    /* Common content settings */
+    .about, .resume, .projects, .post {
+
+	// CSS fallback for solid background + rgba
+	background:	none repeat scroll 0 0 alpha_color(204, 204, 204, 0.5);
+        background:	none repeat scroll 0 0 rgba(204,204,204,0.5);
+
+        @include border-radius($content-border-radius);
+
+	margin-top:     0.75em;
+	margin-bottom:  0.75em;
+
+        /* Push in the text */
+        padding:        0.1em 0.5em 0.25em 0.5em;
+
+	/* Boxs/post spacing */
+	&:first-child {
+	    margin-top:	1em;
+	}
+	&:last-child {
+	    margin-bottom:  0.25em;
+	}
+
+	/* Content paragraph spacing */
+	@include paragraph($paragraph-default-margin, $paragraph-indent);
+
+	/* Plain link styling */
+	@include plain-link();
+    }
+
+    /* Blog content settings */
+    .post {
+//        margin-top:     1em;
+//        margin-bottom:  1em;
+
+	/* Make sure it matches the margin & width of .postDate */
+	@include paragraph($post-date-width + $post-date-margin, $paragraph-indent);
+
+	/* Not sure if this is ideal, will need to inspect latter and clearfix? */
+	overflow: auto;
+    }
+
+
+    /* Common .about, .resume, .projects content settings */
+    .about, .resume, .projects {
+	/* Box Header */
+	h1 {
+	    font-size:	    1.5em;
+	    font-weight:    bold;
+	    font-family:    serif;
+	    line-height:    1.524em;
+	    margin:	    0 10px;
+	    color:	    $link-color;
+	}
+    }
+
+    /* Remove indenting for projects */
+    .projects {
+	@include paragraph($paragraph-default-margin, $paragraph-indent);
+
+	// Definition list settings for supplemental info in projects
+	dl {
+	    // Make sure it matches the paragraph indent space
+	    margin-left:    $paragraph-default-margin;
+	}
+
+	dt {
+	    font-weight:    bold;
+	}
+    }
+
+    // Resume specific
+    .resume {
+	ul {
+	    margin-top:	0.1em;
+	}
+
+	p {
+	    margin-top:	    0em;
+	    margin-bottom:  0em;
+	}
+    }
+
+    #affiliations, #activities,
+    #personal_projects {
+	ul {
+	    padding-left:	30px;
+	}
+    }
+}
+
+/* Date Stamp formatting */
+.postDate {
+    display:	    block;
+    float:	    left;
+    line-height:    1.5em;
+// Move all of this code over to "em" if possible? for IE
+//    margin-top:	    6px;
+    margin-top:	    -27px;
+    margin-bottom:  6px;
+    margin-left:    0px;
+    margin-right:   $post-date-margin;
+    text-align:	    center;
+    width:	    $post-date-width;
+
+    // CSS fallback for solid background + rgba
+    background:	none repeat scroll 0 0 alpha_color(115, 0, 33, 1.0);
+    background: none repeat scroll 0 0 rgba(115, 0, 33, 1.0);
+
+    @include border-radius($date-border-radius);
+
+    color:  $post-date-text-color;
+    font-family: sans-serif;
+
+    .day {
+	font-size:	2em;
+	padding-top:    0.4em;
+	padding-bottom: 0.2em;
+    }
+
+    .month {
+	font-variant:   small-caps;
+	margin-bottom: -0.2em;
+	letter-spacing: 0.1em;
+    }
+
+    .year {
+	margin-top:    -0.2em;
+	padding-bottom: 0.2em;
+    }
+
+    span {
+	display:	block;
+    }
+}
+
+/* Posts Header */
+.postHeader {
+    h1 {
+	font-size:	1.5em;
+	font-weight:    bold;
+	font-family:    serif;
+	line-height:    1.524em;
+	margin:		0 10px;
+	margin-left:	$post-date-width + $post-date-margin;
+
+	/* Plain link styling */
+	@include plain-link();
+    }
+}
+
+/* Posts Footer */
+.postFooter {
+    font-style:	    italic;
+
+    /* Make sure it matches the margin & width of .postDate */
+    margin-left:    $post-date-width + $post-date-margin;
+
+    /* Plain link styling */
+    @include plain-link();
+}
