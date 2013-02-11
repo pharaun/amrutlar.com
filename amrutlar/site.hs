@@ -7,68 +7,82 @@ import           Hakyll
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyll $ do
-    match "images/*" $ do
+    -- Just copy over all of the images
+    match "images/**" $ do
         route   idRoute
         compile copyFileCompiler
 
-    -- Only outputs to 3 files:
-    -- ie6.css ie.css standard.css
-    match ("css/standard.scss" .||. "css/ie.scss" .||. "css/ie6.scss") $ do
-        route $ setExtension ".css"
+    -- Should only output the following 3 files: ie6.css, ie.css, standard.css
+    match (fromRegex "^scss/[^_][^/]*.scss") $ do
+        route $ gsubRoute "scss" (const "css") `composeRoutes` setExtension ".css"
         compile $ getResourceString >>= sassify
 
-    match (fromList ["about.rst", "contact.markdown"]) $ do
-        route   $ setExtension "html"
+    -- Copy over and apply the basic template for the basic pages
+    match (fromList ["about.html", "resume.html"]) $ do
+        route idRoute
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
             >>= relativizeUrls
 
+    -- Generate all of the relevant files for projects related pages
     match "projects/*" $ do
         route $ setExtension "html"
         compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/project.html"    projectCtx
+            >>= loadAndApplyTemplate "templates/project.html" projectCtx
             >>= loadAndApplyTemplate "templates/default.html" projectCtx
             >>= relativizeUrls
 
+    create ["projects.html"] $ do
+        route idRoute
+        compile $ do
+            let listCtx =
+                    field "projects" (\_ -> projectList recentFirst) `mappend`
+                    constField "title" "Projects" `mappend`
+                    constField "menu" "projects" `mappend`
+                    projectCtx
+
+            makeItem ""
+                >>= loadAndApplyTemplate "templates/project-list.html" listCtx
+                >>= loadAndApplyTemplate "templates/default.html" listCtx
+                >>= relativizeUrls
+
+    -- Generate all of the relevant files for article related pages
     match "articles/*" $ do
         route $ setExtension "html"
         compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/post.html"    postCtx
-            >>= loadAndApplyTemplate "templates/default.html" postCtx
+            >>= saveSnapshot "content"
+            >>= loadAndApplyTemplate "templates/article.html" articleCtx
+            >>= loadAndApplyTemplate "templates/default.html" articleCtx
             >>= relativizeUrls
 
-    create ["archive.html"] $ do
+    create ["articles.html"] $ do
         route idRoute
         compile $ do
-            let archiveCtx =
-                    field "posts" (\_ -> postList recentFirst) `mappend`
-                    constField "title" "Archives"              `mappend`
+            let listCtx =
+                    field "articles" (\_ -> articleList recentFirst) `mappend`
+                    constField "title" "Articles" `mappend`
+                    constField "menu" "blog" `mappend`
                     defaultContext
 
             makeItem ""
-                >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
-                >>= loadAndApplyTemplate "templates/default.html" archiveCtx
-                >>= relativizeUrls
-
-
-    match "index.html" $ do
-        route idRoute
-        compile $ do
-            let indexCtx = field "posts" $ \_ -> postList (take 3 . recentFirst)
-
-            getResourceBody
-                >>= applyAsTemplate indexCtx
-                >>= loadAndApplyTemplate "templates/default.html" postCtx
+                >>= loadAndApplyTemplate "templates/article-list.html" listCtx
+                >>= loadAndApplyTemplate "templates/default.html" listCtx
                 >>= relativizeUrls
 
     match "templates/*" $ compile templateCompiler
 
 
 --------------------------------------------------------------------------------
-postCtx :: Context String
-postCtx =
-    dateField "date" "%B %e, %Y" `mappend`
+articleCtx :: Context String
+articleCtx =
+    dateField "date" "<div class=\"postDate\"><span class=\"day\">%d</span><span class=\"month\">%b</span><span class=\"year\">%Y</span></div>" `mappend`
     defaultContext
+
+--------------------------------------------------------------------------------
+summaryCtx :: Context String
+summaryCtx =
+    field "summary" (\item -> return $ head $ lines $ itemBody item) `mappend`
+    articleCtx
 
 --------------------------------------------------------------------------------
 projectCtx :: Context String
@@ -76,13 +90,21 @@ projectCtx =
     defaultContext
 
 --------------------------------------------------------------------------------
-postList :: ([Item String] -> [Item String]) -> Compiler String
-postList sortFilter = do
-    posts   <- sortFilter <$> loadAll "posts/*"
-    itemTpl <- loadBody "templates/post-item.html"
-    list    <- applyTemplateList itemTpl postCtx posts
+articleList :: ([Item String] -> [Item String]) -> Compiler String
+articleList sortFilter = do
+    articles   <- sortFilter <$> loadAllSnapshots "articles/*" "content"
+    itemTpl <- loadBody "templates/article-item.html"
+    list    <- applyTemplateList itemTpl summaryCtx articles
+    return list
+
+--------------------------------------------------------------------------------
+projectList :: ([Item String] -> [Item String]) -> Compiler String
+projectList sortFilter = do
+    projects   <- sortFilter <$> loadAll "projects/*"
+    itemTpl <- loadBody "templates/project-item.html"
+    list    <- applyTemplateList itemTpl projectCtx projects
     return list
 
 --------------------------------------------------------------------------------
 -- Run sass, then compress - TODO: make the library path more generic
-sassify item = withItemBody (unixFilter "sass" ["-s", "--scss", "--trace", "--load-path", "css", "--load-path", "css/compass", "--load-path", "css/lib", "-r", "/home/anja/projects/linode/amrutlar_website/amrutlar/css/lib/constants.rb", "-r", "/home/anja/projects/linode/amrutlar_website/amrutlar/css/lib/gradient_support.rb"]) item >>= return -- . fmap compressCss
+sassify item = withItemBody (unixFilter "sass" ["-s", "--scss", "--trace", "--load-path", "scss", "--load-path", "scss/compass", "--load-path", "scss/lib", "-r", "./scss/lib/constants.rb", "-r", "./scss/lib/gradient_support.rb"]) item >>= return -- . fmap compressCss
