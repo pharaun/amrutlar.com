@@ -1,8 +1,7 @@
 ---
 title: Python Duplicate Image Finder (Part 2)
 menu: blog
-categories: [C, SSE, Projects]
-description: Python Duplicate Image Finder (Part 2)
+categories: C, SSE, Projects
 ---
 Welcome to the next part of the series of blog post on the [Python Duplicate
 Image Finder](/projects/python-duplicate-image-finder/) project. This post will

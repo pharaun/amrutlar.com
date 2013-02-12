@@ -1,8 +1,7 @@
 ---
 title: Python Duplicate Image Finder (Part 1)
 menu: blog
-categories: [C, OpenMP, SSE, Projects]
-description: New blog post!
+categories: C, OpenMP, SSE, Projects
 ---
 Welcome to part one of what probably will be a long series of blog posts on the
 topic of my [Python Duplicate Image Finder](/projects/python-duplicate-image-finder/)

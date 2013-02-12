@@ -2,7 +2,7 @@
 title: Ruby Tile engine
 menu: projects
 sources: https://github.com/pharaun/ruby-tile
-licenses: [:simplified_bsd]
+licenses: simplified-bsd
 ---
 
 _Ruby Tile engine_ is a project in which I did some work on making a barebone

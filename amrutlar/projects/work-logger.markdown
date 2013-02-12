@@ -2,7 +2,7 @@
 title: Work Logger
 menu: projects
 sources: https://github.com/pharaun/work-logger
-licenses: [:gplv2]
+licenses: gplv2
 ---
 
 _Work Logger_ is a small work logging application that I wrote because I was

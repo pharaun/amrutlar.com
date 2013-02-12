@@ -1,13 +1,16 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
 import           Control.Applicative ((<$>))
+import           Control.Monad       (ap)
 import           Data.Monoid         (mappend)
+import qualified Data.Map            as Map
 import           Hakyll
 
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyll $ do
     -- Just copy over all of the images
+    -- TODO: Special case the favicon.ico it should be in website root
     match "images/**" $ do
         route   idRoute
         compile copyFileCompiler
@@ -20,7 +23,7 @@ main = hakyll $ do
     -- Copy over and apply the basic template for the basic pages
     match (fromList ["about.html", "resume.html"]) $ do
         route idRoute
-        compile $ pandocCompiler
+        compile $ getResourceBody
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
             >>= relativizeUrls
 
@@ -28,6 +31,7 @@ main = hakyll $ do
     match "projects/*" $ do
         route $ setExtension "html"
         compile $ pandocCompiler
+            >>= saveSnapshot "content"
             >>= loadAndApplyTemplate "templates/project.html" projectCtx
             >>= loadAndApplyTemplate "templates/default.html" projectCtx
             >>= relativizeUrls
@@ -62,7 +66,7 @@ main = hakyll $ do
                     field "articles" (\_ -> articleList recentFirst) `mappend`
                     constField "title" "Articles" `mappend`
                     constField "menu" "blog" `mappend`
-                    defaultContext
+                    articleCtx
 
             makeItem ""
                 >>= loadAndApplyTemplate "templates/article-list.html" listCtx
@@ -81,28 +85,59 @@ articleCtx =
 --------------------------------------------------------------------------------
 summaryCtx :: Context String
 summaryCtx =
-    field "summary" (\item -> return $ head $ lines $ itemBody item) `mappend`
-    articleCtx
+    field "summary" (\item -> return $ head $ lines $ itemBody item)
 
 --------------------------------------------------------------------------------
 projectCtx :: Context String
 projectCtx =
+    field "sources" compileSources `mappend`
+    field "licenses" compileLicenses `mappend`
     defaultContext
+
+--------------------------------------------------------------------------------
+-- TODO: fix this up to use proper templates, but fuckit it works as it is right now
+compileSources :: Item a -> Compiler String
+compileSources item = do
+    metadata <- getMetadata (itemIdentifier item)
+    return $ case Map.lookup "sources" metadata of
+        Just x    -> unlines . map (ddA . trim) $ splitAll "," x
+        otherwise -> "<dd>None</dd>"
+    where ddA = ("<dd><a href=\"" ++) . ap (++) (("\">" ++) . (++ "</a></dd>"))
+
+--------------------------------------------------------------------------------
+-- TODO: fix this up to use proper templates, but fuckit it works as it is right now
+compileLicenses :: Item a -> Compiler String
+compileLicenses item = do
+    metadata <- getMetadata (itemIdentifier item)
+    return $ case Map.lookup "licenses" metadata of
+        Just x    -> unlines . map ((\i -> case Map.lookup i license of
+                Just x    -> x
+                otherwise -> "<dd>None</dd>"
+            ) . trim) $ splitAll "," x
+        otherwise -> "<dd>None</dd>"
+    where
+        -- TODO: extract to a file and load it at compile time
+        license = Map.fromList [
+            ("simplified-bsd", "<dd><a href=\"http://www.opensource.org/licenses/bsd-license.php\">Simplified BSD</a></dd>"),
+            ("gfdl", "<dd><a href=\"http://www.gnu.org/copyleft/fdl.html\">GNU Free Documentation License</a></dd>"),
+            ("gplv2", "<dd><a href=\"http://www.gnu.org/licenses/gpl-2.0.html\">GPLv2</a></dd>"),
+            ("lgplv2", "<dd><a href=\"http://www.gnu.org/licenses/lgpl-2.1.html\">LGPLv2.1</a></dd>")
+            ]
 
 --------------------------------------------------------------------------------
 articleList :: ([Item String] -> [Item String]) -> Compiler String
 articleList sortFilter = do
     articles   <- sortFilter <$> loadAllSnapshots "articles/*" "content"
     itemTpl <- loadBody "templates/article-item.html"
-    list    <- applyTemplateList itemTpl summaryCtx articles
+    list    <- applyTemplateList itemTpl (summaryCtx `mappend` articleCtx) articles
     return list
 
 --------------------------------------------------------------------------------
 projectList :: ([Item String] -> [Item String]) -> Compiler String
 projectList sortFilter = do
-    projects   <- sortFilter <$> loadAll "projects/*"
+    projects   <- sortFilter <$> loadAllSnapshots "projects/*" "content"
     itemTpl <- loadBody "templates/project-item.html"
-    list    <- applyTemplateList itemTpl projectCtx projects
+    list    <- applyTemplateList itemTpl (summaryCtx `mappend` projectCtx) projects
     return list
 
 --------------------------------------------------------------------------------

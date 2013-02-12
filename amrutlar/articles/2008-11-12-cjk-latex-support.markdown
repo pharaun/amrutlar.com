@@ -1,8 +1,7 @@
 ---
 title: CJK-LaTeX Support
 menu: blog
-categories: [CJK, LaTeX]
-description: Documenting how to setup CJK support in LaTeX
+categories: CJK, LaTeX
 ---
 This post will document my adventure in getting Japanese support to work with
 LaTeX.
