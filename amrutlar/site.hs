@@ -2,97 +2,133 @@
 {-# LANGUAGE OverloadedStrings #-}
 import           Control.Applicative ((<$>))
 import           Control.Monad       (ap)
-import           Data.Monoid         (mappend)
+import           Data.Monoid         (mappend, mconcat)
 import qualified Data.Map            as Map
 import           Hakyll
 
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyll $ do
-    -- Just copy over all of the images
-    -- TODO: Special case the favicon.ico it should be in website root
+    -- Special case the favicon.ico to website root
+    match "images/favicon.ico" $ do
+        route $ gsubRoute "images/" (const "")
+        compile copyFileCompiler
+
+    -- Copy over the remaining images
     match "images/**" $ do
         route   idRoute
         compile copyFileCompiler
 
-    -- Should only output the following 3 files: ie6.css, ie.css, standard.css
+    -- Should only output scss files without a underscore in front (ie6.scss, ie.scss, standard.scss)
     match (fromRegex "^scss/[^_][^/]*.scss") $ do
         route $ gsubRoute "scss" (const "css") `composeRoutes` setExtension ".css"
         compile $ getResourceString >>= sassify
 
     -- Copy over and apply the basic template for the basic pages
-    match (fromList ["about.html", "resume.html"]) $ do
-        route idRoute
+    match (fromList ["static/about.html", "static/resume.html"]) $ do
+        route $ gsubRoute "static/" (const "")
         compile $ getResourceBody
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
             >>= relativizeUrls
 
-    -- Generate all of the relevant files for projects related pages
+    -- Build tags
+    tags <- buildTags "articles/*" (fromCapture "tags/*.html")
+
+    -- Generate the project and article relevant pages
     match "projects/*" $ do
         route $ setExtension "html"
         compile $ pandocCompiler
             >>= saveSnapshot "content"
             >>= loadAndApplyTemplate "templates/project.html" projectCtx
-            >>= loadAndApplyTemplate "templates/default.html" projectCtx
+            >>= loadAndApplyTemplate "templates/default.html" defaultContext
             >>= relativizeUrls
 
+    match "articles/*" $ do
+        route $ setExtension "html"
+        compile $ pandocCompiler
+            >>= saveSnapshot "content"
+            >>= loadAndApplyTemplate "templates/article.html" (articleCtx tags)
+            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+            >>= relativizeUrls
+
+    -- Generate the index for the project and articles
     create ["projects.html"] $ do
         route idRoute
         compile $ do
-            let listCtx =
-                    field "projects" (\_ -> projectList recentFirst) `mappend`
-                    constField "title" "Projects" `mappend`
-                    constField "menu" "projects" `mappend`
-                    projectCtx
+            let listCtx = mconcat
+                    [ field "projects" (\_ -> projectList chronological)
+                    , constField "title" "Projects"
+                    , constField "menu" "projects"
+                    , projectCtx
+                    ]
 
             makeItem ""
                 >>= loadAndApplyTemplate "templates/project-list.html" listCtx
                 >>= loadAndApplyTemplate "templates/default.html" listCtx
                 >>= relativizeUrls
 
-    -- Generate all of the relevant files for article related pages
-    match "articles/*" $ do
-        route $ setExtension "html"
-        compile $ pandocCompiler
-            >>= saveSnapshot "content"
-            >>= loadAndApplyTemplate "templates/article.html" articleCtx
-            >>= loadAndApplyTemplate "templates/default.html" articleCtx
-            >>= relativizeUrls
-
     create ["articles.html"] $ do
         route idRoute
         compile $ do
-            let listCtx =
-                    field "articles" (\_ -> articleList recentFirst) `mappend`
-                    constField "title" "Articles" `mappend`
-                    constField "menu" "blog" `mappend`
-                    articleCtx
+            let listCtx = mconcat
+                    [ field "articles" (\_ -> articleList tags "articles/*" recentFirst)
+                    , constField "title" "Articles"
+                    , constField "menu" "blog"
+                    , articleCtx tags
+                    ]
 
             makeItem ""
                 >>= loadAndApplyTemplate "templates/article-list.html" listCtx
                 >>= loadAndApplyTemplate "templates/default.html" listCtx
                 >>= relativizeUrls
 
+    -- Post tags
+    tagsRules tags $ \tag pattern -> do
+        let title = "Posts tagged " ++ tag
+
+        -- Copied from posts, need to refactor
+        route idRoute
+        compile $ do
+            let tagCtx = mconcat
+                    [ field "articles" (\_ -> articleList tags pattern recentFirst)
+                    , constField "title" title
+                    , constField "menu" "blog"
+                    , defaultContext
+                    ]
+
+            makeItem ""
+                >>= loadAndApplyTemplate "templates/article-tags.html" tagCtx
+                >>= loadAndApplyTemplate "templates/default.html" (defaultContext `mappend` constField "menu" "blog")
+                >>= relativizeUrls
+
+    -- Generate the templates
     match "templates/*" $ compile templateCompiler
 
+--------------------------------------------------------------------------------
+fancyDateCtx :: Context String
+fancyDateCtx =
+    dateField "date" "<div class=\"postDate\"><span class=\"day\">%d</span><span class=\"month\">%b</span><span class=\"year\">%Y</span></div>"
 
 --------------------------------------------------------------------------------
-articleCtx :: Context String
-articleCtx =
-    dateField "date" "<div class=\"postDate\"><span class=\"day\">%d</span><span class=\"month\">%b</span><span class=\"year\">%Y</span></div>" `mappend`
-    defaultContext
+articleCtx :: Tags -> Context String
+articleCtx tags = mconcat
+    [ fancyDateCtx
+    , tagsField "tags" tags
+    , defaultContext
+    ]
+
+--------------------------------------------------------------------------------
+projectCtx :: Context String
+projectCtx = mconcat
+    [ field "sources" compileSources
+    , field "licenses" compileLicenses
+    , defaultContext
+    ]
 
 --------------------------------------------------------------------------------
 summaryCtx :: Context String
 summaryCtx =
     field "summary" (\item -> return $ head $ lines $ itemBody item)
-
---------------------------------------------------------------------------------
-projectCtx :: Context String
-projectCtx =
-    field "sources" compileSources `mappend`
-    field "licenses" compileLicenses `mappend`
-    defaultContext
 
 --------------------------------------------------------------------------------
 -- TODO: fix this up to use proper templates, but fuckit it works as it is right now
@@ -125,11 +161,11 @@ compileLicenses item = do
             ]
 
 --------------------------------------------------------------------------------
-articleList :: ([Item String] -> [Item String]) -> Compiler String
-articleList sortFilter = do
+articleList :: Tags -> Pattern -> ([Item String] -> [Item String]) -> Compiler String
+articleList tags pattern sortFilter = do
     articles   <- sortFilter <$> loadAllSnapshots "articles/*" "content"
     itemTpl <- loadBody "templates/article-item.html"
-    list    <- applyTemplateList itemTpl (summaryCtx `mappend` articleCtx) articles
+    list    <- applyTemplateList itemTpl (summaryCtx `mappend` articleCtx tags) articles
     return list
 
 --------------------------------------------------------------------------------

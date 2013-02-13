@@ -1,7 +1,7 @@
 ---
 title: The Creation of this Site
 menu: blog
-categories: nanoc
+tags: nanoc
 ---
 This post documents the generation of this site from a set of templates and
 markdown files.  This site uses the remarkable static site generator named
