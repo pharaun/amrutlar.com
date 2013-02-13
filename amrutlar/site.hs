@@ -163,7 +163,7 @@ compileLicenses item = do
 --------------------------------------------------------------------------------
 articleList :: Tags -> Pattern -> ([Item String] -> [Item String]) -> Compiler String
 articleList tags pattern sortFilter = do
-    articles   <- sortFilter <$> loadAllSnapshots "articles/*" "content"
+    articles   <- sortFilter <$> loadAllSnapshots pattern "content"
     itemTpl <- loadBody "templates/article-item.html"
     list    <- applyTemplateList itemTpl (summaryCtx `mappend` articleCtx tags) articles
     return list
