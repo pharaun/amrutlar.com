@@ -3,7 +3,8 @@
 import           Control.Applicative ((<$>))
 import           Control.Monad       (ap)
 import           Data.Monoid         (mappend, mconcat)
-import qualified Data.Map            as Map
+import qualified Data.Map            as M
+import qualified Data.List           as L
 import           Hakyll
 
 --------------------------------------------------------------------------------
@@ -44,7 +45,7 @@ main = hakyll $ do
             >>= relativizeUrls
 
     match "articles/*" $ do
-        route $ setExtension "html"
+        route $ traditionalArticle `composeRoutes` setExtension "html"
         compile $ pandocCompiler
             >>= saveSnapshot "content"
             >>= loadAndApplyTemplate "templates/article.html" (articleCtx tags)
@@ -84,10 +85,10 @@ main = hakyll $ do
 
     -- Post tags
     tagsRules tags $ \tag pattern -> do
-        let title = "Posts tagged " ++ tag
+        let title = "Category: " ++ tag
 
         -- Copied from posts, need to refactor
-        route idRoute
+        route $ gsubRoute "tags" (const "categories")
         compile $ do
             let tagCtx = mconcat
                     [ field "articles" (\_ -> articleList tags pattern recentFirst)
@@ -131,11 +132,22 @@ summaryCtx =
     field "summary" (\item -> return $ head $ lines $ itemBody item)
 
 --------------------------------------------------------------------------------
+traditionalArticle :: Routes
+traditionalArticle = customRoute cleanDate
+
+cleanDate :: Identifier -> FilePath
+cleanDate i = L.concat $ L.intersperse "/" $ [L.head path] ++ yearDay ++ (L.tail $ L.init path) ++ [fileName]
+    where
+        path = splitAll "/" $ toFilePath i
+        fileName = L.concat $ L.intersperse "-" $ L.drop 3 $ splitAll "-" $ L.last path
+        yearDay = L.take 2 $ splitAll "-" $ L.last path
+
+--------------------------------------------------------------------------------
 -- TODO: fix this up to use proper templates, but fuckit it works as it is right now
 compileSources :: Item a -> Compiler String
 compileSources item = do
     metadata <- getMetadata (itemIdentifier item)
-    return $ case Map.lookup "sources" metadata of
+    return $ case M.lookup "sources" metadata of
         Just x    -> unlines . map (ddA . trim) $ splitAll "," x
         otherwise -> "<dd>None</dd>"
     where ddA = ("<dd><a href=\"" ++) . ap (++) (("\">" ++) . (++ "</a></dd>"))
@@ -145,15 +157,15 @@ compileSources item = do
 compileLicenses :: Item a -> Compiler String
 compileLicenses item = do
     metadata <- getMetadata (itemIdentifier item)
-    return $ case Map.lookup "licenses" metadata of
-        Just x    -> unlines . map ((\i -> case Map.lookup i license of
+    return $ case M.lookup "licenses" metadata of
+        Just x    -> unlines . map ((\i -> case M.lookup i license of
                 Just x    -> x
                 otherwise -> "<dd>None</dd>"
             ) . trim) $ splitAll "," x
         otherwise -> "<dd>None</dd>"
     where
         -- TODO: extract to a file and load it at compile time
-        license = Map.fromList [
+        license = M.fromList [
             ("simplified-bsd", "<dd><a href=\"http://www.opensource.org/licenses/bsd-license.php\">Simplified BSD</a></dd>"),
             ("gfdl", "<dd><a href=\"http://www.gnu.org/copyleft/fdl.html\">GNU Free Documentation License</a></dd>"),
             ("gplv2", "<dd><a href=\"http://www.gnu.org/licenses/gpl-2.0.html\">GPLv2</a></dd>"),
