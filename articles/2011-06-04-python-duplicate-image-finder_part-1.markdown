@@ -4,7 +4,7 @@ menu: blog
 tags: C, OpenMP, SSE, Projects
 ---
 Welcome to part one of what probably will be a long series of blog posts on the
-topic of my [Python Duplicate Image Finder](/projects/python-duplicate-image-finder/)
+topic of my [Python Duplicate Image Finder](/projects/python-duplicate-image-finder.html)
 project. This post will go over the basic image similarity algorithm that is currently
 implemented and the various challenges in getting the n-way compare using the basic
 algorithm to be fast enough to be usable.
@@ -74,7 +74,7 @@ image signature the RAM usage would explode (20+ GB) to silly levels.
 So then the next version then stopped copying the image signature data around
 and instead attempted to take advantage of a shared read only list, but it
 proved to be quite tough because the image signatures were being held in
-[Numpy](http://numpy.scipy.org/) _ndarray_. I attempted a few different
+[Numpy](http://www.numpy.org/) _ndarray_. I attempted a few different
 approaches and while some of them panned out, in the end it proved to just be
 way too slow.
 

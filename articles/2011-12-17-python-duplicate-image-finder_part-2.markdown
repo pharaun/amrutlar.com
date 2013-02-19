@@ -4,7 +4,7 @@ menu: blog
 tags: C, SSE, Projects
 ---
 Welcome to the next part of the series of blog post on the [Python Duplicate
-Image Finder](/projects/python-duplicate-image-finder/) project. This post will
+Image Finder](/projects/python-duplicate-image-finder.html) project. This post will
 go much more in-depth about performance analysis of the assembly code emitted by
 [gcc](http://gcc.gnu.org/) and my usage of the
 [SSE](http://en.wikipedia.org/wiki/Streaming_SIMD_Extensions) intrinsics. It
