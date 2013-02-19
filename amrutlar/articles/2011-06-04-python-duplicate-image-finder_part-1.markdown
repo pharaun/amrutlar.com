@@ -101,39 +101,40 @@ from the Cython or the plain Python version of the code. So you'll just have to
 take my words for it here that it was a nice initial improvement in speed.
 Right below is the code snippet that was used in the initial version.
 
-    // Each array == "3072 entry long - 3 * 32 * 32"
-    #define ARRAY_LENGTH 3072
-    // Similarity div == 255.0 * 1024.0 * 3.0 - Max value * element in array * rgb (3)
-    #define SIMILARITY_DIV 783360.0
-    #define SIMILARITY_THRESHOLD 0.98
+~~~~c
+// Each array == "3072 entry long - 3 * 32 * 32"
+#define ARRAY_LENGTH 3072
+// Similarity div == 255.0 * 1024.0 * 3.0 - Max value * element in array * rgb (3)
+#define SIMILARITY_DIV 783360.0
+#define SIMILARITY_THRESHOLD 0.98
 
-    // The array of pointers to each of the numpy ndarray
-    const double** array;
+// The array of pointers to each of the numpy ndarray
+const double** array;
 
-    #pragma omp parallel for shared(dup, array, path) private(j, i, k)
-	for(i = 0; i < length; i++) {
-	    for(j = (i + 1); j < length; j++) {
-		const double* sima = array[i];
-		const double* simb = array[j];
+#pragma omp parallel for shared(dup, array, path) private(j, i, k)
+for(i = 0; i < length; i++) {
+	for(j = (i + 1); j < length; j++) {
+	const double* sima = array[i];
+	const double* simb = array[j];
 
-		double sum = 0.0;
+	double sum = 0.0;
 
-		for(k = 0; k < ARRAY_LENGTH; k++) {
-		    sum += fabs(sima[k] - simb[k]);
-		}
-
-		double fp = (1.0 - (sum / SIMILARITY_DIV));
-
-		if(fp >= SIMILARITY_THRESHOLD) {
-		    #pragma omp critical
-		    {
-			dup += 1;
-			append_to_list(fp, i, j);
-		    }
-		}
-	    }
+	for(k = 0; k < ARRAY_LENGTH; k++) {
+		sum += fabs(sima[k] - simb[k]);
 	}
-{:.c}
+
+	double fp = (1.0 - (sum / SIMILARITY_DIV));
+
+	if(fp >= SIMILARITY_THRESHOLD) {
+		#pragma omp critical
+		{
+		dup += 1;
+		append_to_list(fp, i, j);
+		}
+	}
+	}
+}
+~~~~
 
 Then to see if I could squeeze out a bit more improvement, I went ahead and
 implemented the loop into SSE using the SSE intrinsics. And thanks to GCC and
@@ -145,40 +146,41 @@ improvements here, it just improved by 9% to ~1.2 million compares a second.
 Below is the code snippet for the SSE intrinsics version of the inner loop, as
 you can see using SSE intrinsics can decrease readability of the code.
 
-    // Init partial sums
-    __m128d vsum = _mm_set1_pd(0.0);
+~~~~c
+// Init partial sums
+__m128d vsum = _mm_set1_pd(0.0);
 
-    for(k = 0; k < ARRAY_LENGTH; k += 2) {
-	    // Load 2 doubles from sima, simb
-	    __m128d va = _mm_load_pd(&sima[k]);
-	    __m128d vb = _mm_load_pd(&simb[k]);
+for(k = 0; k < ARRAY_LENGTH; k += 2) {
+	// Load 2 doubles from sima, simb
+	__m128d va = _mm_load_pd(&sima[k]);
+	__m128d vb = _mm_load_pd(&simb[k]);
 
-	    // Calc diff = sima - simb
-	    __m128d vdiff = _mm_sub_pd(va, vb);
+	// Calc diff = sima - simb
+	__m128d vdiff = _mm_sub_pd(va, vb);
 
-	    // calc neg diff = 0.0 - diff
-	    __m128d vnegdiff = _mm_sub_pd(_mm_set1_pd(0.0), vdiff);
+	// calc neg diff = 0.0 - diff
+	__m128d vnegdiff = _mm_sub_pd(_mm_set1_pd(0.0), vdiff);
 
-	    // calc abs diff = max(diff, - diff)
-	    __m128d vabsdiff = _mm_max_pd(vdiff, vnegdiff);
+	// calc abs diff = max(diff, - diff)
+	__m128d vabsdiff = _mm_max_pd(vdiff, vnegdiff);
 
-	    // accumulate two partial sums
-	    vsum = _mm_add_pd(vsum, vabsdiff);
-    }
+	// accumulate two partial sums
+	vsum = _mm_add_pd(vsum, vabsdiff);
+}
 
-    // Accumulate the partial sums into one
-    vsum = _mm_hadd_pd(vsum, _mm_set1_pd(0.0));
+// Accumulate the partial sums into one
+vsum = _mm_hadd_pd(vsum, _mm_set1_pd(0.0));
 
-    // calc vsum = vsum / vdiv
-    vsum = _mm_div_sd(vsum, _mm_set1_pd(SIMILARITY_DIV));
+// calc vsum = vsum / vdiv
+vsum = _mm_div_sd(vsum, _mm_set1_pd(SIMILARITY_DIV));
 
-    // calc vsum = 1.0 - vsum
-    vsum = _mm_sub_pd(_mm_set1_pd(1.0), vsum);
+// calc vsum = 1.0 - vsum
+vsum = _mm_sub_pd(_mm_set1_pd(1.0), vsum);
 
-    // Unload vsum -> fp
-    double fp[2];
-    _mm_store_sd(&fp[0], vsum);
-{:.c}
+// Unload vsum -> fp
+double fp[2];
+_mm_store_sd(&fp[0], vsum);
+~~~~
 
 There should have been a bit more improvement because I was able to double pump
 two doubles calculation at the same time via SSE... This fact seemed to
@@ -201,8 +203,9 @@ were assigned the latter chunks would end up finishing quicker and then sitting 
 idle. So to remedy this I instructed OpenMP to use the dynamic scheduler which does
 have an overhead but in this case it was a big win.
 
-    #pragma omp parallel for shared(dup, array, path) private(j, i, k) schedule (dynamic)
-{:.c}
+~~~~c
+#pragma omp parallel for shared(dup, array, path) private(j, i, k) schedule (dynamic)
+~~~~
 
 Now for my final optimization to date on this project is on two items. Firstly
 I was able to verify that I didn't need the extra precision granted with using
@@ -210,30 +213,31 @@ doubles. And secondly the Numpy arrays were scattered all over memory so it
 made sense to gather it all up into a large array and use indexing pointers to
 jump directly to the needed data.
 
-    // The array of pointers to each of the numpy ndarray
-    const double** array;
+~~~~c
+// The array of pointers to each of the numpy ndarray
+const double** array;
 
-    // Array of pointers to each chunk of image similarity data in the farray
-    const float** findex;
+// Array of pointers to each chunk of image similarity data in the farray
+const float** findex;
 
-    // Single array containing all of the image data in a single block of memory
-    float* farray;
+// Single array containing all of the image data in a single block of memory
+float* farray;
 
-    // Start the conversion here
-    int i, k;
+// Start the conversion here
+int i, k;
 
-    for(i = 0; i < length; i++) {
-        const double* sim = array[i];
+for(i = 0; i < length; i++) {
+	const double* sim = array[i];
 
-        // File away this pointer as a index into the index array
-        findex[i] = &farray[(i * ARRAY_LENGTH)];
+	// File away this pointer as a index into the index array
+	findex[i] = &farray[(i * ARRAY_LENGTH)];
 
-        // Populate the farray with values
-        for(k = 0; k < ARRAY_LENGTH; k++) {
-            farray[((i * ARRAY_LENGTH) + k)] = (float)sim[k];
-        }
-    }
-{:.c}
+	// Populate the farray with values
+	for(k = 0; k < ARRAY_LENGTH; k++) {
+		farray[((i * ARRAY_LENGTH) + k)] = (float)sim[k];
+	}
+}
+~~~~
 
 The code above is what was used to gather up all of the doubles, convert to
 float, and store it in an single large chunk instead of all over memory. Then
@@ -274,7 +278,6 @@ slightly bit better.
 ### Resources
 
 python-duplicate-finder
-: <https://github.com/pharaun/python-duplicate-finder>
-
+:    <https://github.com/pharaun/python-duplicate-finder>
 How to absolute 2 double or 4 floats using SSE instruction set? (Up to SSE4)
-: <http://stackoverflow.com/questions/5508628/how-to-absolute-2-double-or-4-floats-using-sse-instruction-set-up-to-sse4>
+:    <http://stackoverflow.com/questions/5508628/how-to-absolute-2-double-or-4-floats-using-sse-instruction-set-up-to-sse4>

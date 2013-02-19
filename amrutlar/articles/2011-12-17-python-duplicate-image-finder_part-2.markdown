@@ -127,14 +127,12 @@ in one domain is right away used as input in another domain. The table below
 details the bypass latency, the leftmost column is the *From* domain and the
 rest of the table is in the *To* domain.
 
-|---
-| | Integer | SMID Integer | Floating Point | Store |
-|:-|:-:|:-:|:-:|:-:|
-| **Integer** | 0 | 1 | 2 | 0 |
-| **SMID Integer** | 1 | 0 | 2 | 1 |
-| **Floating Point** | 2 | 2 | 0 | 1 |
-| **Load** | 0 | 1 | 2 | 0 |
-|---
+||Integer|SMID Integer|Floating Point|Store
+|:-|:-|:-|:-|:-
+|**Integer**|0|1|2|0
+|**SMID Integer**|1|0|2|1
+|**Floating Point**|2|2|0|1
+|**Load**|0|1|2|0
 
 
 ### Cache and memory latency
@@ -142,14 +140,12 @@ rest of the table is in the *To* domain.
 The numbers presented in this section is not absolute and should be taken with
 a grain of sand but they should roughly represent the cache and memory latency.
 
-|--
-| | Memory Latency |
-|-:|:-:|
-| L1 Cache | 4 Cycles |
-| L2 Cache | 11 Cycles |
-| L3 Cache | 38 Cycles |
-| Ram | 78 to 104 Cycles |
-|---
+||Memory Latency
+|:-|:-
+|L1 Cache|4 Cycles
+|L2 Cache|11 Cycles
+|L3 Cache|38 Cycles
+|Ram|78 to 104 Cycles
 
 Now the latency was calculated assuming *ddr3-1067* sticks of RAM. The x5650's
 can use up to *ddr3-1333* sticks of RAM, however I didn't have the specs on
@@ -197,43 +193,45 @@ improvement over the initial C version, but its still not fast enough!
 Anyway I am going to omit the extra/supporting code such as the code that processes
 the sums of the calculations. Below is the C code with the SSE intrinsics in it.
 
-    // Init partial sums
-    __m128 vsum = _mm_setzero_ps();
+~~~~c
+// Init partial sums
+__m128 vsum = _mm_setzero_ps();
 
-    for(k = 0; k < ARRAY_LENGTH; k += 4) {
-	    // Load 4 floats from sima, simb
-	    __m128 va = _mm_load_ps(&sima[k]);
-	    __m128 vb = _mm_load_ps(&simb[k]);
+for(k = 0; k < ARRAY_LENGTH; k += 4) {
+	// Load 4 floats from sima, simb
+	__m128 va = _mm_load_ps(&sima[k]);
+	__m128 vb = _mm_load_ps(&simb[k]);
 
-	    // calc diff = sima - simb
-	    __m128 vdiff = _mm_sub_ps(va, vb);
+	// calc diff = sima - simb
+	__m128 vdiff = _mm_sub_ps(va, vb);
 
-	    // calc neg diff = 0.0 - diff
-	    __m128 vnegdiff = _mm_sub_ps(_mm_setzero_ps(), vdiff);
+	// calc neg diff = 0.0 - diff
+	__m128 vnegdiff = _mm_sub_ps(_mm_setzero_ps(), vdiff);
 
-	    // calc abs diff = max(diff, - diff)
-	    __m128 vabsdiff = _mm_max_ps(vdiff, vnegdiff);
+	// calc abs diff = max(diff, - diff)
+	__m128 vabsdiff = _mm_max_ps(vdiff, vnegdiff);
 
-	    // accumulate two partial sums
-	    vsum = _mm_add_ps(vsum, vabsdiff);
-    }
-{:.c}
+	// accumulate two partial sums
+	vsum = _mm_add_ps(vsum, vabsdiff);
+}
+~~~~
 
 Now here below is the assembly output from gcc of the code above. As you can
 see its not an exact copy of the intrinsics because gcc was able to optimize
 and reorder some of the instructions to work better.
 
-    .L76:
-	    movaps  (%rsi,%rax), %xmm0      # __m128 vb = _mm_load_ps(&sima[k]);
-	    movaps  %xmm3, %xmm2            # zero out xmm2 register
-	    subps   (%rcx,%rax), %xmm0      # __m128 vdiff = _mm_sub_ps(va, vb); - va loaded from ram
-	    addq    $16, %rax
-	    cmpq    $12288, %rax
-	    subps   %xmm0, %xmm2            # __m128 vnegdiff = _mm_sub_ps(_mm_setzero_ps(), vdiff);
-	    maxps   %xmm2, %xmm0            # __m128 vabsdiff = _mm_max_ps(vdiff, vnegdiff);
-	    addps   %xmm0, %xmm1            # vsum = _mm_add_ps(vsum, vabsdiff);
-	    jne     .L76                    # Loop again till done
-{:.gas}
+~~~~gas
+.L76:
+	movaps  (%rsi,%rax), %xmm0      # __m128 vb = _mm_load_ps(&sima[k]);
+	movaps  %xmm3, %xmm2            # zero out xmm2 register
+	subps   (%rcx,%rax), %xmm0      # __m128 vdiff = _mm_sub_ps(va, vb); - va loaded from ram
+	addq    $16, %rax
+	cmpq    $12288, %rax
+	subps   %xmm0, %xmm2            # __m128 vnegdiff = _mm_sub_ps(_mm_setzero_ps(), vdiff);
+	maxps   %xmm2, %xmm0            # __m128 vabsdiff = _mm_max_ps(vdiff, vnegdiff);
+	addps   %xmm0, %xmm1            # vsum = _mm_add_ps(vsum, vabsdiff);
+	jne     .L76                    # Loop again till done
+~~~~
 
 
 #### Analysis
@@ -254,12 +252,10 @@ no memory loading delay.
 
 Below is a table of the cycle breakdowns:
 
-|---
-| | CPU | L1/Ram | Total | μs/Compare | Compare/s |
-|:-|:-:|:-:|:-:|:-:|
-| **Best case** | 5,115 | 6,144 | 11,259 | 4.335 | 230,680 |
-| **Worst Case** | 5,115 | 159,744 | 164,899 | 64.49 | 15,751 |
-|---
+||CPU|L1/Ram|Total|μs/Compare|Compare/s
+|:-|:-|:-|:-|:-
+|**Best Case**|5,115|6,144|11,259|4.335|230,680
+|**Worst Case**|5,115|159,744|164,899|64.49|15,751
 
 Now take the best case and multiple it by 24 (core/thread on the dual x5650's),
 this ends up at ~5.53 million compares a second.
@@ -279,38 +275,40 @@ usage and the partial unrolling to do more per loop.
 Anyway I am going to omit the extra/supporting code such as the code that processes
 the sums of the calculations. Below is the C code with the SSE intrinsics in it.
 
-    // Sign mask for abs - -0.0f = 1 << 31
-    const __m128 sign_mask = _mm_set1_ps(-0.0f);
+~~~~c
+// Sign mask for abs - -0.0f = 1 << 31
+const __m128 sign_mask = _mm_set1_ps(-0.0f);
 
-    // Init sum
-    __m128 sum1 = _mm_setzero_ps();
-    __m128 sum2 = _mm_setzero_ps();
+// Init sum
+__m128 sum1 = _mm_setzero_ps();
+__m128 sum2 = _mm_setzero_ps();
 
-    for(k = 0; k < ARRAY_LENGTH/4; k += 2) {
-	    sum1 += _mm_andnot_ps(sign_mask, _mm_sub_ps(sima[k], simb[k]));
-	    sum2 += _mm_andnot_ps(sign_mask, _mm_sub_ps(sima[k+1], simb[k+1]));
-    }
-{:.c}
+for(k = 0; k < ARRAY_LENGTH/4; k += 2) {
+	sum1 += _mm_andnot_ps(sign_mask, _mm_sub_ps(sima[k], simb[k]));
+	sum2 += _mm_andnot_ps(sign_mask, _mm_sub_ps(sima[k+1], simb[k+1]));
+}
+~~~~
 
 Now here below is the assembly output from gcc of the code above. As you can
 see its not an exact copy of the intrinsics because gcc was able to optimize
 and reorder some of the instructions to work better.
 
-    .L64:
-	    movaps  (%rsi,%rax), %xmm0      # va1 = load from ram
-	    movaps  %xmm3, %xmm8            # Copy sign_mask into xmm8
-	    subps   (%rcx,%rax), %xmm0      # diff1 = _mm_sub_ps(va1, vb1); - vb1 loaded from ram
-	    andnps  %xmm0, %xmm8            # abs1 = _mm_andnot_ps(sign_mask, diff1);
-	    movaps  16(%rsi,%rax), %xmm0    # va2 = load from ram
-	    subps   16(%rcx,%rax), %xmm0    # diff2 = _mm_sub_ps(va2, vb2); - vb2 loaded from ram
-	    addq    $32, %rax
-	    cmpq    $12288, %rax
-	    addps   %xmm8, %xmm2            # sum1 += abs1
-	    movaps  %xmm3, %xmm8            # copy sign_mask into xmm8
-	    andnps  %xmm0, %xmm8            # abs2 = _mm_andnot_ps(sign_mask, diff2);
-	    addps   %xmm8, %xmm1            # sum2 += abs2
-	    jne     .L64                    # Loop again till done
-{:.gas}
+~~~~gas
+.L64:
+	movaps  (%rsi,%rax), %xmm0      # va1 = load from ram
+	movaps  %xmm3, %xmm8            # Copy sign_mask into xmm8
+	subps   (%rcx,%rax), %xmm0      # diff1 = _mm_sub_ps(va1, vb1); - vb1 loaded from ram
+	andnps  %xmm0, %xmm8            # abs1 = _mm_andnot_ps(sign_mask, diff1);
+	movaps  16(%rsi,%rax), %xmm0    # va2 = load from ram
+	subps   16(%rcx,%rax), %xmm0    # diff2 = _mm_sub_ps(va2, vb2); - vb2 loaded from ram
+	addq    $32, %rax
+	cmpq    $12288, %rax
+	addps   %xmm8, %xmm2            # sum1 += abs1
+	movaps  %xmm3, %xmm8            # copy sign_mask into xmm8
+	andnps  %xmm0, %xmm8            # abs2 = _mm_andnot_ps(sign_mask, diff2);
+	addps   %xmm8, %xmm1            # sum2 += abs2
+	jne     .L64                    # Loop again till done
+~~~~
 
 
 #### Analysis
@@ -332,12 +330,10 @@ loading delays.
 
 Below is a table of the cycle breakdowns:
 
-|---
-| | CPU | L1/Ram | Total | μs/Compare | Compare/s |
-|:-|:-:|:-:|:-:|:-:|
-| **Best case** | 3,326 | 6,144 | 9,470 | 3.646 | 274,270 |
-| **Worst Case** | 3,326 | 159,744 | 163,070 | 62.78 | 15,929 |
-|---
+||CPU|L1/Ram|Total|μs/Compare|Compare/s
+|:-|:-|:-|:-|:-
+|**Best Case**|3,326|6,144|9,470|3.646|274,270
+|**Worst Case**|3,326|159,744|163,070|62.78|15,929
 
 Now take the best case and multiple it by 24 (core/thread on the dual x5650's),
 this ends up at ~6.58 million compares a second. This is a nice improvement
@@ -361,36 +357,38 @@ This version is quicker because of a couple reasons:
 Anyway I am going to omit the extra/supporting code such as the code that processes
 the sums of the calculations. Below is the C code with the SSE intrinsics in it.
 
-    // Init partial sums
-    __m128i vsum = _mm_setzero_si128();
+~~~~c
+// Init partial sums
+__m128i vsum = _mm_setzero_si128();
 
-    for(k = 0; k < ARRAY_LENGTH; k += 16) {
-	    // Load 16 uint8_t from sima, simb
-	    __m128i va = _mm_load_si128((const __m128i*)&sima[k]);
-	    __m128i vb = _mm_load_si128((const __m128i*)&simb[k]);
+for(k = 0; k < ARRAY_LENGTH; k += 16) {
+	// Load 16 uint8_t from sima, simb
+	__m128i va = _mm_load_si128((const __m128i*)&sima[k]);
+	__m128i vb = _mm_load_si128((const __m128i*)&simb[k]);
 
-	    // Calc Sum Absolute Difference over the 16x uint8_t
-	    // 0, 0, 0, uint16 | 0, 0, 0, uint16
-	    __m128i vabsdiff = _mm_sad_epu8(va, vb);
+	// Calc Sum Absolute Difference over the 16x uint8_t
+	// 0, 0, 0, uint16 | 0, 0, 0, uint16
+	__m128i vabsdiff = _mm_sad_epu8(va, vb);
 
-	    // Accumulate the two int32 (uint16 "extended")
-	    vsum = _mm_add_epi32(vsum, vabsdiff);
-    }
-{:.c}
+	// Accumulate the two int32 (uint16 "extended")
+	vsum = _mm_add_epi32(vsum, vabsdiff);
+}
+~~~~
 
 Now here below is the assembly output from gcc of the code above. As you can
 see its not an exact copy of the intrinsics because gcc was able to optimize
 and reorder some of the instructions to work better.
 
-    .L40:
-	    movdqa  (%rax), %xmm1           # __m128i va = _mm_load_si128((const __m128i*)&sima[k]);
-	    addq    $16, %rax
-	    psadbw  (%rcx), %xmm1           # __m128i vabsdiff = _mm_sad_epu8(va, vb); - vb loaded from 
-	    addq    $16, %rcx
-	    cmpq    %rsi, %rax
-	    paddd   %xmm1, %xmm0            # vsum = _mm_add_epi32(vsum, vabsdiff);
-	    jne     .L40                    # Keep looping till done
-{:.gas}
+~~~~gas
+.L40:
+	movdqa  (%rax), %xmm1           # __m128i va = _mm_load_si128((const __m128i*)&sima[k]);
+	addq    $16, %rax
+	psadbw  (%rcx), %xmm1           # __m128i vabsdiff = _mm_sad_epu8(va, vb); - vb loaded from
+	addq    $16, %rcx
+	cmpq    %rsi, %rax
+	paddd   %xmm1, %xmm0            # vsum = _mm_add_epi32(vsum, vabsdiff);
+	jne     .L40                    # Keep looping till done
+~~~~
 
 
 #### Analysis
@@ -411,12 +409,10 @@ memory loading delays.
 
 Below is a table of the cycle breakdowns:
 
-|---
-| | CPU | L1/Ram | Total | μs/Compare | Compare/s |
-|:-|:-:|:-:|:-:|:-:|
-| **Best case** | 480 | 1,536 | 2,016 | 0.7762 | 1,288,300 |
-| **Worst Case** | 480 | 39,936 | 40,416 | 15.56 | 64,267 |
-|---
+||CPU|L1/Ram|Total|μs/Compare|Compare/s
+|:-|:-|:-|:-|:-
+|**Best Case**|480|1,536|2,016|0.7762|1,288,300
+|**Worst Case**|480|39,936|40,416|15.56|64,267
 
 Now take the best case and multiple it by 24 (core/thread on the dual x5650's),
 this ends up at ~30.91 million compares a second. This is the fastest
@@ -433,31 +429,33 @@ case, it actually degraded performance mildly.
 Anyway I am going to omit the extra/supporting code such as the code that processes
 the sums of the calculations. Below is the C code with the SSE intrinsics in it.
 
-    // Init sum
-    __m128i sum1 = _mm_setzero_si128();
-    __m128i sum2 = _mm_setzero_si128();
+~~~~c
+// Init sum
+__m128i sum1 = _mm_setzero_si128();
+__m128i sum2 = _mm_setzero_si128();
 
-    for(k = 0; k < ARRAY_LENGTH/16; k += 2) {
-	    sum1 = _mm_add_epi32(sum1, _mm_sad_epu8(sima[k], simb[k]));
-	    sum2 = _mm_add_epi32(sum2, _mm_sad_epu8(sima[k+1], simb[k+1]));
-    }
-{:.c}
+for(k = 0; k < ARRAY_LENGTH/16; k += 2) {
+	sum1 = _mm_add_epi32(sum1, _mm_sad_epu8(sima[k], simb[k]));
+	sum2 = _mm_add_epi32(sum2, _mm_sad_epu8(sima[k+1], simb[k+1]));
+}
+~~~~
 
 Now here below is the assembly output from gcc of the code above. As you can
 see its not an exact copy of the intrinsics because gcc was able to optimize
 and reorder some of the instructions to work better.
 
-    .L28:
-	    movdqa  (%rsi,%rax), %xmm2      # va1 = load from ram
-	    psadbw  (%rcx,%rax), %xmm2      # sad1 = _mm_sad_epu8(va1, vb1); - vb1 load from ram
-	    paddd   %xmm2, %xmm1            # sum1 = _mm_add_epi32(sum1, sad1);
-	    movdqa  16(%rsi,%rax), %xmm2    # va2 = load from ram
-	    psadbw  16(%rcx,%rax), %xmm2    # sad2 = _mm_sad_epu8(va2, vb2); - vb2 load from ram
-	    addq    $32, %rax
-	    paddd   %xmm2, %xmm0            # sum2 = _mm_add_epi32(sum2, sad2)
-	    cmpq    $3072, %rax
-	    jne     .L28                    # Loop till done
-{:.gas}
+~~~~gas
+.L28:
+	movdqa  (%rsi,%rax), %xmm2      # va1 = load from ram
+	psadbw  (%rcx,%rax), %xmm2      # sad1 = _mm_sad_epu8(va1, vb1); - vb1 load from ram
+	paddd   %xmm2, %xmm1            # sum1 = _mm_add_epi32(sum1, sad1);
+	movdqa  16(%rsi,%rax), %xmm2    # va2 = load from ram
+	psadbw  16(%rcx,%rax), %xmm2    # sad2 = _mm_sad_epu8(va2, vb2); - vb2 load from ram
+	addq    $32, %rax
+	paddd   %xmm2, %xmm0            # sum2 = _mm_add_epi32(sum2, sad2)
+	cmpq    $3072, %rax
+	jne     .L28                    # Loop till done
+~~~~
 
 
 #### Analysis
@@ -479,12 +477,10 @@ no memory loading delays.
 
 Below is a table of the cycle breakdowns:
 
-|---
-| | CPU | L1/Ram | Total | μs/Compare | Compare/s |
-|:-|:-:|:-:|:-:|:-:|
-| **Best case** | 576 | 1,536 | 2,112 | 0.8131 | 1,229,900 |
-| **Worst Case** | 576 | 39,936 | 40,512 | 15.6 | 64,100 |
-|---
+||CPU|L1/Ram|Total|μs/Compare|Compare/s
+|:-|:-|:-|:-|:-
+|**Best Case**|576|1,536|2,112|0.8131|1,229,900
+|**Worst Case**|576|39,936|40,512|15.6|64,100
 
 Now take the best case and multiple it by 24 (core/thread on the dual x5650's),
 this ends up at ~29.51 million compares a second. This is slightly slower, because
@@ -500,21 +496,14 @@ a chart that shows the performance of all of the above 4 options along with the
 performance from the previous article. In this chart _uint8_ is Unsigned 8bit
 Integers. Also the first two entry are for Doubles.
 
-|---
-| | Compare/s |
-|:-|:-|
-| OpenMP | 1.23 Million |
-|---
-| Scheduling | 2.92 Million |
-|---
-| Floats | 5.53 - 6.19 Million |
-|---
-| Unrolled Floats | 6.58 Million |
-|---
-| uint8 | 30.91 Million |
-|---
-| Unrolled uint8 | 29.51 Million |
-|---
+||Compare/s
+|:-|:-
+|OpenMP|1.23 Million
+|Scheduling|2.92 Million
+|Floats|5.53 - 6.19 Million
+|Unrolled Floats|6.58 Million
+|uint8|30.91 Million
+|Unrolled uint8|29.51 Million
 
 The key takeaway to take from this, is you can often bring in a large amount of
 improvement by dropping into a lower level language and bringing in
@@ -528,7 +517,6 @@ form.
 ## Resources
 
 python-duplicate-finder
-: <https://github.com/pharaun/python-duplicate-finder>
-
+:    <https://github.com/pharaun/python-duplicate-finder>
 Software optimization resources
-: <http://www.agner.org/optimize/>
+:    <http://www.agner.org/optimize/>
