@@ -39,7 +39,7 @@ the pre-[AVX](http://en.wikipedia.org/wiki/Advanced_Vector_Extensions)
 non-AVX instruction set which is [SSE4.2](http://en.wikipedia.org/wiki/SSE4).
 
 There is also this quite nice [SVG
-diagram](/img/blog/2011/07/python-duplicate-image-finder_part-2/Intel_Nehalem_arch.svg)
+diagram](/images/Intel_Nehalem_arch.svg)
 of the Intel Nehalem microarchitecture that I got from the Wikipedia article on
 the [Nehalem
 microarchitecture](http://en.wikipedia.org/wiki/Nehalem_%28microarchitecture%29).

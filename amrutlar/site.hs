@@ -1,11 +1,20 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-import           Control.Applicative ((<$>))
-import           Control.Monad       (ap)
-import           Data.Monoid         (mappend, mconcat)
-import qualified Data.Map            as M
-import qualified Data.List           as L
+import           Prelude              hiding (catch)
+import           Control.Applicative  ((<$>))
+import           Control.Monad        (ap)
+import           Data.Monoid          (mappend, mconcat)
+import qualified Data.Map             as M
+import qualified Data.List            as L
+import qualified Data.ByteString.Lazy as B
+import qualified Data.ByteString      as S
 import           Hakyll
+import           System.IO.Temp       (openBinaryTempFile)
+import           System.Cmd           (rawSystem)
+import           System.IO            (hFlush, hClose, openBinaryFile, IOMode(ReadMode))
+import           System.IO.Error      (isDoesNotExistError)
+import           System.Directory     (removeFile)
+import           Control.Exception    (throwIO, catch)
 
 --------------------------------------------------------------------------------
 main :: IO ()
@@ -14,6 +23,13 @@ main = hakyll $ do
     match "images/favicon.ico" $ do
         route $ gsubRoute "images/" (const "")
         compile copyFileCompiler
+
+    -- Special case the background
+    match "images/boston-skyline.png" $ do
+        route $ setExtension "jpg"
+        compile $ getResourceLBS
+            >>= convertToJPG
+            >>= crushJPG
 
     -- Copy over the remaining images
     match "images/**" $ do
@@ -191,3 +207,36 @@ projectList sortFilter = do
 --------------------------------------------------------------------------------
 -- Run sass, then compress - TODO: make the library path more generic
 sassify item = withItemBody (unixFilter "sass" ["-s", "--scss", "--trace", "--load-path", "scss", "--load-path", "scss/compass", "--load-path", "scss/lib", "-r", "./scss/lib/constants.rb", "-r", "./scss/lib/gradient_support.rb"]) item >>= return -- . fmap compressCss
+
+--------------------------------------------------------------------------------
+-- Convert then crush the background jpeg
+convertToJPG item = withItemBody (unixFilterLBS "convert" ["-", "-quality", "100", "jpg:-"]) item >>= return
+
+-- TODO: Need to clean up the file handling big time here
+crushJPG :: Item B.ByteString -> Compiler (Item B.ByteString)
+crushJPG item = unsafeCompiler $ do
+    (filePath, handle) <- openBinaryTempFile "/tmp/" "crush"
+    B.hPut handle (itemBody item)
+    hFlush handle
+    hClose handle
+
+    -- Now run jpeg optim on the temporary file
+    rawSystem "jpegoptim" ["-m80", filePath]
+
+    -- Read it all back in non-lazy and return it
+    newHandle <- openBinaryFile filePath ReadMode
+    content <- S.hGetContents newHandle
+    hClose newHandle
+
+    -- Remove file
+    removeIfExists filePath
+
+    -- Convert to lazy and returnA
+    return $ itemSetBody (B.fromChunks [content]) item
+
+removeIfExists :: FilePath -> IO ()
+removeIfExists fileName = removeFile fileName `catch` handleExists
+    where
+        handleExists e
+            | isDoesNotExistError e = return ()
+            | otherwise = throwIO e
