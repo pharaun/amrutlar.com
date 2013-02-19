@@ -15,6 +15,11 @@ import           System.IO            (hFlush, hClose, openBinaryFile, IOMode(Re
 import           System.IO.Error      (isDoesNotExistError)
 import           System.Directory     (removeFile)
 import           Control.Exception    (throwIO, catch)
+import qualified Text.Pandoc          as P
+import qualified Text.Pandoc.Generic  as PG
+import           Data.Char            (toLower)
+import           System.Process       (readProcess)
+import           System.IO.Unsafe     (unsafePerformIO)
 
 --------------------------------------------------------------------------------
 main :: IO ()
@@ -54,7 +59,7 @@ main = hakyll $ do
     -- Generate the project and article relevant pages
     match "projects/*" $ do
         route $ setExtension "html"
-        compile $ pandocCompiler
+        compile $ pandocPygmentizeCompiler
             >>= saveSnapshot "content"
             >>= loadAndApplyTemplate "templates/project.html" projectCtx
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
@@ -62,7 +67,7 @@ main = hakyll $ do
 
     match "articles/*" $ do
         route $ traditionalArticle `composeRoutes` setExtension "html"
-        compile $ pandocCompiler
+        compile $ pandocPygmentizeCompiler
             >>= saveSnapshot "content"
             >>= loadAndApplyTemplate "templates/article.html" (articleCtx tags)
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
@@ -212,7 +217,9 @@ sassify item = withItemBody (unixFilter "sass" ["-s", "--scss", "--trace", "--lo
 -- Convert then crush the background jpeg
 convertToJPG item = withItemBody (unixFilterLBS "convert" ["-", "-quality", "100", "jpg:-"]) item >>= return
 
+--------------------------------------------------------------------------------
 -- TODO: Need to clean up the file handling big time here
+-- Some of this manual handles can probably be replaced with writeFile
 crushJPG :: Item B.ByteString -> Compiler (Item B.ByteString)
 crushJPG item = unsafeCompiler $ do
     (filePath, handle) <- openBinaryTempFile "/tmp/" "crush"
@@ -234,9 +241,38 @@ crushJPG item = unsafeCompiler $ do
     -- Convert to lazy and returnA
     return $ itemSetBody (B.fromChunks [content]) item
 
+--------------------------------------------------------------------------------
 removeIfExists :: FilePath -> IO ()
 removeIfExists fileName = removeFile fileName `catch` handleExists
     where
         handleExists e
             | isDoesNotExistError e = return ()
             | otherwise = throwIO e
+
+--------------------------------------------------------------------------------
+pandocPygmentizeCompiler :: Compiler (Item String)
+pandocPygmentizeCompiler =
+    pandocCompilerWithTransform defaultHakyllReaderOptions defaultHakyllWriterOptions highlight
+
+highlight :: P.Pandoc -> P.Pandoc
+highlight = (PG.bottomUp highlightBlock :: P.Pandoc -> P.Pandoc)
+
+highlightBlock :: P.Block -> P.Block
+highlightBlock (P.CodeBlock (_, options , _ ) code) = P.RawBlock "html" (pygments code options)
+highlightBlock x = x
+
+-- TODO: Extremely messy, borrowed from: https://github.com/lcw/jocco/blob/master/docs/pygments.hs
+pygments :: String -> [String] -> String
+pygments code options
+    | (length options) == 1 = cleanupDivs $ unsafePerformIO $ readProcess "pygmentize" ["-l", (map toLower (head options)), "-O encoding=utf8,outencoding=utf8", "-f", "html"] code
+    | (length options) == 2 = cleanupDivs $ unsafePerformIO $ readProcess "pygmentize" ["-l", (map toLower (head options)), "-O encoding=utf8,outencoding=utf8", "-f", "html"] code
+    | otherwise = "<pre class =\"highlight\"><code>" ++ code ++ "</code></pre>"
+
+-- INPUT:  <div class="highlight"><pre> ++ code ++ </pre></div>
+-- OUTPUT: <pre class ="highlight"><code> ++ code ++ </code></pre>
+-- TODO: Do this in a better way than regex such as parsing and rebuilding the html
+cleanupDivs :: String -> String
+cleanupDivs x =
+    replaceAll "<div class=\"" (const "<pre class=\"") $
+    replaceAll "\"><pre>" (const "\"><code>") $
+    replaceAll "</pre></div>" (const "</code></pre>") x
