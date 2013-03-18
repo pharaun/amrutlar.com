@@ -78,7 +78,7 @@ main = hakyll $ do
         route idRoute
         compile $ do
             let listCtx = mconcat
-                    [ field "projects" (\_ -> projectList chronological)
+                    [ field "projects" (\_ -> projectList)
                     , constField "title" "Projects"
                     , constField "menu" "projects"
                     , projectCtx
@@ -194,20 +194,18 @@ compileLicenses item = do
             ]
 
 --------------------------------------------------------------------------------
-articleList :: Tags -> Pattern -> ([Item String] -> [Item String]) -> Compiler String
+articleList :: Tags -> Pattern -> ([Item String] -> Compiler [Item String]) -> Compiler String
 articleList tags pattern sortFilter = do
-    articles   <- sortFilter <$> loadAllSnapshots pattern "content"
     itemTpl <- loadBody "templates/article-item.html"
-    list    <- applyTemplateList itemTpl (summaryCtx `mappend` articleCtx tags) articles
-    return list
+    articles <- sortFilter =<< loadAllSnapshots pattern "content"
+    applyTemplateList itemTpl (summaryCtx `mappend` articleCtx tags) articles
 
 --------------------------------------------------------------------------------
-projectList :: ([Item String] -> [Item String]) -> Compiler String
-projectList sortFilter = do
-    projects   <- sortFilter <$> loadAllSnapshots "projects/*" "content"
+projectList :: Compiler String
+projectList = do
     itemTpl <- loadBody "templates/project-item.html"
-    list    <- applyTemplateList itemTpl (summaryCtx `mappend` projectCtx) projects
-    return list
+    projects <- loadAllSnapshots "projects/*" "content"
+    applyTemplateList itemTpl (summaryCtx `mappend` projectCtx) projects
 
 --------------------------------------------------------------------------------
 -- Run sass, then compress - TODO: make the library path more generic
