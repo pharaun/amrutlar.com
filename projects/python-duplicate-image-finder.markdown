@@ -3,6 +3,7 @@ title: Python Duplicate Image Finder
 menu: projects
 sources: https://github.com/pharaun/python-duplicate-finder
 licenses: lgplv2
+math: true
 ---
 
 _Python Duplicate Image Finder_ is a project in which I test out various
@@ -11,7 +12,7 @@ approaches for discovering duplicate images and dealing with them.
 So far I have implemented these following approaches:
 
 - File content hash
-- Basic image similarity - _sum(abs(a - b)) > threshold_
+- Basic image similarity - $\sum |a - b| > threshold$
 
 I am hoping to get around to implementing these following approaches:
 

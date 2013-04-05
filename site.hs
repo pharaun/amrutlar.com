@@ -50,7 +50,7 @@ main = hakyll $ do
     match (fromList ["static/about.html", "static/resume.html"]) $ do
         route $ gsubRoute "static/" (const "")
         compile $ getResourceBody
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+            >>= loadAndApplyTemplate "templates/default.html" defaultCtx
             >>= relativizeUrls
 
     -- Build tags
@@ -62,7 +62,7 @@ main = hakyll $ do
         compile $ pandocPygmentizeCompiler
             >>= saveSnapshot "content"
             >>= loadAndApplyTemplate "templates/project.html" projectCtx
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+            >>= loadAndApplyTemplate "templates/default.html" defaultCtx
             >>= relativizeUrls
 
     match "articles/*" $ do
@@ -70,7 +70,7 @@ main = hakyll $ do
         compile $ pandocPygmentizeCompiler
             >>= saveSnapshot "content"
             >>= loadAndApplyTemplate "templates/article.html" (articleCtx tags)
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+            >>= loadAndApplyTemplate "templates/default.html" defaultCtx
             >>= relativizeUrls
 
     -- Generate the index for the project and articles
@@ -115,12 +115,12 @@ main = hakyll $ do
                     [ field "articles" (\_ -> articleList tags pattern recentFirst)
                     , constField "title" title
                     , constField "menu" "blog"
-                    , defaultContext
+                    , defaultCtx
                     ]
 
             makeItem ""
                 >>= loadAndApplyTemplate "templates/article-tags.html" tagCtx
-                >>= loadAndApplyTemplate "templates/default.html" (defaultContext `mappend` constField "menu" "blog")
+                >>= loadAndApplyTemplate "templates/default.html" (defaultCtx `mappend` constField "menu" "blog")
                 >>= relativizeUrls
 
     -- Generate the templates
@@ -132,11 +132,18 @@ fancyDateCtx =
     dateField "date" "<div class=\"postDate\"><span class=\"day\">%d</span><span class=\"month\">%b</span><span class=\"year\">%Y</span></div>"
 
 --------------------------------------------------------------------------------
+defaultCtx :: Context String
+defaultCtx = mconcat
+    [ field "mathjax" mathjax
+    , defaultContext
+    ]
+
+--------------------------------------------------------------------------------
 articleCtx :: Tags -> Context String
 articleCtx tags = mconcat
     [ fancyDateCtx
     , tagsField "tags" tags
-    , defaultContext
+    , defaultCtx
     ]
 
 --------------------------------------------------------------------------------
@@ -144,13 +151,26 @@ projectCtx :: Context String
 projectCtx = mconcat
     [ field "sources" compileSources
     , field "licenses" compileLicenses
-    , defaultContext
+    , defaultCtx
     ]
 
 --------------------------------------------------------------------------------
 summaryCtx :: Context String
 summaryCtx =
     field "summary" (\item -> return $ head $ lines $ itemBody item)
+
+--------------------------------------------------------------------------------
+-- Only load mathjax if there is actually math on the page, indicated in
+-- the metadata option "math: true"
+-- Originally found on John Lenz's blog:
+-- http://blog.wuzzeb.org/posts/2012-06-08-hakyll-and-latex.html
+-- and adapted to work with Hakyll 4
+mathjax :: Item String -> Compiler String
+mathjax item = do
+    metadata <- getMetadata (itemIdentifier item)
+    return $ case M.lookup "math" metadata of
+        Just "true" -> "<script type=\"text/javascript\" src=\"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML\" />"
+        otherwise -> ""
 
 --------------------------------------------------------------------------------
 traditionalArticle :: Routes
@@ -188,8 +208,10 @@ compileLicenses item = do
         -- TODO: extract to a file and load it at compile time
         license = M.fromList [
             ("simplified-bsd", "<dd><a href=\"http://www.opensource.org/licenses/bsd-license.php\">Simplified BSD</a></dd>"),
+            ("bsd3", "<dd><a href=\"http://opensource.org/licenses/BSD-3-Clause\">BSD 3-Clause License</a></dd>"),
             ("gfdl", "<dd><a href=\"http://www.gnu.org/copyleft/fdl.html\">GNU Free Documentation License</a></dd>"),
             ("gplv2", "<dd><a href=\"http://www.gnu.org/licenses/gpl-2.0.html\">GPLv2</a></dd>"),
+            ("agplv3", "<dd><a href=\"http://www.gnu.org/licenses/agpl-3.0.html\">AGPLv3</a></dd>"),
             ("lgplv2", "<dd><a href=\"http://www.gnu.org/licenses/lgpl-2.1.html\">LGPLv2.1</a></dd>")
             ]
 
@@ -248,9 +270,15 @@ removeIfExists fileName = removeFile fileName `catch` handleExists
             | otherwise = throwIO e
 
 --------------------------------------------------------------------------------
+mathJaxPandocOptions :: P.WriterOptions
+mathJaxPandocOptions = defaultHakyllWriterOptions
+    { P.writerHTMLMathMethod = P.MathJax ""
+    }
+
+--------------------------------------------------------------------------------
 pandocPygmentizeCompiler :: Compiler (Item String)
 pandocPygmentizeCompiler =
-    pandocCompilerWithTransform defaultHakyllReaderOptions defaultHakyllWriterOptions highlight
+    pandocCompilerWithTransform defaultHakyllReaderOptions mathJaxPandocOptions highlight
 
 highlight :: P.Pandoc -> P.Pandoc
 highlight = (PG.bottomUp highlightBlock :: P.Pandoc -> P.Pandoc)

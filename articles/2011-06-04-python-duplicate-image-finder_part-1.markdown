@@ -2,6 +2,7 @@
 title: Python Duplicate Image Finder (Part 1)
 menu: blog
 tags: C, OpenMP, SSE, Projects
+math: true
 ---
 Welcome to part one of what probably will be a long series of blog posts on the
 topic of my [Python Duplicate Image Finder](/projects/python-duplicate-image-finder.html)
@@ -12,7 +13,7 @@ algorithm to be fast enough to be usable.
 
 ## Basic Algorithm
 
-For this post we'll go over the basic _sum(abs(a - b)) > threshold_ algorithm.
+For this post we'll go over the basic $\sum |a - b| > threshold$ algorithm.
 Basically the program goes through these steps:
 
 1. Find all image files as determined by _imghdr_ and enroll it into a list.
@@ -20,7 +21,7 @@ Basically the program goes through these steps:
    and add them to a list along with the file path. This is sort of an image
    signature.
 3. Run a n-way compare on the list of image signature using the above equation
-   _sum(abs(a - b))_ and if the result was greater than a certain threshold,
+   $\sum |a-b|$ and if the result was greater than a certain threshold,
    which currently is 98% then its deemed to be similar enough and its added
    to a list of similar images.
 
@@ -33,7 +34,7 @@ compare to save us time. This will hopefully be a future feature...
 
 ## A Problem with the Algorithm
 
-The problem is with step 3, which is the n-way compare, this is an _O(n^2)_
+The problem is with step 3, which is the n-way compare, this is an $O(n^2)$
 operation hence the number of compares needed for a reasonably large image
 collection of about 64,000 images for example would be roughly ~4 billion
 compares. So clearly we need to find a way to trim that down a little.
@@ -51,15 +52,15 @@ say you have an array of 10 elements that needs to be compared to each others:
 6. Last element does not need to be compared with anything else.
 
 Hence its possible to short-circuit a good part of the unneeded compares as you
-can see above. This leads to a big O notation of _O(n*(n-1)/2)_ which for
+can see above. This leads to a big O notation of $O(\frac{n*(n-1)}{2})$ which for
 64,000 images would end up being roughly ~2 billion compares which is a nice
-improvement. However in the end its still an _O(n^2)_ algorithm so it'll still
+improvement. However in the end its still an $O(n^2)$ algorithm so it'll still
 end up being nasty in the end.
 
 
 ## Basic speed improvements
 
-Basically since its an _O(n^2)_ algorithm we want the inner loops to be as fast
+Basically since its an $O(n^2)$ algorithm we want the inner loops to be as fast
 as possible so that it can burn through as many compares as possible. Since
 this problem is for most part quite parallelable, it made sense to try to
 distribute the workload cross multiple cores.
@@ -267,7 +268,7 @@ row indicate its performance improvement in addition to the previous row's.
 
 Overall it is a quite nice improvement and it was able to get the comparing
 step at roughly ~3 hours down to ~400 seconds for 64,000 images.  However one
-thing to keep in mind is ultimately the algorithm is _O(n^2)_ which will screw
+thing to keep in mind is ultimately the algorithm is $O(n^2)$ which will screw
 us in the end hence I will be still working on figuring out how to bucket/group
 images into similar buckets to keep the total N count low enough for it to
 remain fast enough with these optimizations documented here. Also there still

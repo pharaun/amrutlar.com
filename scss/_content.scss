@@ -77,6 +77,34 @@
 	dt {
 	    font-weight:    bold;
 	}
+
+	// Combo ordered/unordered list settings
+	ol, ul {
+	    // Margins
+	    margin-left:    $paragraph-default-margin;
+
+	    ol, ul {
+		// Remove the $post-margin
+		margin-left:	0px;
+
+		// Reset the indenting to roughly the default
+		padding-left:	2.5em; // 40px @ 16px fonts
+	    }
+	}
+
+	// Ordered list settings
+	ol {
+	    // Indent it so the numbers are lined up with paragraph vertically
+	    padding-left:   1.5em;
+	}
+
+	// Unordered list settings
+	ul {
+	    // Indent it so the bullet are lined up with paragraph vertically
+	    padding-left:   0.938em;
+	}
+
+
     }
 
     // Resume specific
