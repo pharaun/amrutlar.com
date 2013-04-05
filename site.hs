@@ -23,7 +23,7 @@ import           System.IO.Unsafe     (unsafePerformIO)
 
 --------------------------------------------------------------------------------
 main :: IO ()
-main = hakyll $ do
+main = hakyllWith config $ do
     -- Special case the favicon.ico to website root
     match "images/favicon.ico" $ do
         route $ gsubRoute "images/" (const "")
@@ -123,6 +123,13 @@ main = hakyll $ do
                 >>= loadAndApplyTemplate "templates/default.html" (defaultCtx `mappend` constField "menu" "blog")
                 >>= relativizeUrls
 
+    -- Feeds
+    create ["rss.xml"] $ do
+        route idRoute
+        compile $ loadAllSnapshots "articles/*" "content"
+            >>= recentFirst
+            >>= renderAtom feedConfiguration feedCtx
+
     -- Generate the templates
     match "templates/*" $ compile templateCompiler
 
@@ -147,6 +154,13 @@ articleCtx tags = mconcat
     ]
 
 --------------------------------------------------------------------------------
+feedCtx :: Context String
+feedCtx = mconcat
+    [ bodyField "description"
+    , defaultContext
+    ]
+
+--------------------------------------------------------------------------------
 projectCtx :: Context String
 projectCtx = mconcat
     [ field "sources" compileSources
@@ -158,6 +172,22 @@ projectCtx = mconcat
 summaryCtx :: Context String
 summaryCtx =
     field "summary" (\item -> return $ head $ lines $ itemBody item)
+
+--------------------------------------------------------------------------------
+config :: Configuration
+config = defaultConfiguration
+    { deployCommand = "rsync --checksum -avz ./_site/* amrutlar.com:/var/www/"
+    }
+
+--------------------------------------------------------------------------------
+feedConfiguration :: FeedConfiguration
+feedConfiguration = FeedConfiguration
+    { feedTitle = "Amrutlar"
+    , feedDescription = "Articles on various technical topic"
+    , feedAuthorName = "Anja Berens"
+    , feedAuthorEmail = "pharaun666@gmail.com"
+    , feedRoot = "http://amrutlar.com"
+    }
 
 --------------------------------------------------------------------------------
 -- Only load mathjax if there is actually math on the page, indicated in
